@@ -5,17 +5,39 @@ namespace Ookii.Common;
 /// <summary>
 /// Encapsulates a method that returns a <see cref="ReadOnlySpan{T}"/>.
 /// </summary>
-/// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
+/// <typeparam name="TResult">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
 /// <returns>
 /// The return value of the method that this delegate encapsulates.
 /// </returns>
-public delegate ReadOnlySpan<T> ReadOnlySpanFunc<T>();
+public delegate ReadOnlySpan<TResult> ReadOnlySpanFunc<TResult>();
+
+/// <summary>
+/// Encapsulates a method that returns a <see cref="ReadOnlySpan{T}"/>.
+/// </summary>
+/// <typeparam name="T">The type of the first argument.</typeparam>
+/// <typeparam name="TResult">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
+/// <param name="value">The first argument for the encapsulated method.</param>
+/// <returns>
+/// The return value of the method that this delegate encapsulates.
+/// </returns>
+public delegate ReadOnlySpan<TResult> ReadOnlySpanFunc<T, TResult>(T value);
 
 /// <summary>
 /// Encapsulates a method that returns a <see cref="Span{T}"/>.
 /// </summary>
-/// <typeparam name="T">The type of the items in the <see cref="Span{T}"/>.</typeparam>
+/// <typeparam name="TResult">The type of the items in the <see cref="Span{T}"/>.</typeparam>
 /// <returns>
 /// The return value of the method that this delegate encapsulates.
 /// </returns>
-public delegate Span<T> SpanFunc<T>();
+public delegate Span<TResult> SpanFunc<TResult>();
+
+/// <summary>
+/// Encapsulates a method that returns a <see cref="Span{T}"/>.
+/// </summary>
+/// <typeparam name="T">The type of the first argument.</typeparam>
+/// <typeparam name="TResult">The type of the items in the <see cref="Span{T}"/>.</typeparam>
+/// <param name="value">The first argument for the encapsulated method.</param>
+/// <returns>
+/// The return value of the method that this delegate encapsulates.
+/// </returns>
+public delegate Span<TResult> SpanFunc<T, TResult>(T value);
