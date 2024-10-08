@@ -331,4 +331,26 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// <see cref="HasValue"/> is <see langword="false"/>.
     /// </exception>
     public static explicit operator ReadOnlySpanPair<TFirst, TSecond>(NullableReadOnlySpanPair<TFirst, TSecond> value) => value.Value;
+
+    /// <summary>
+    /// Compares two <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/> instances for equality.
+    /// </summary>
+    /// <param name="left">The first value to compare.</param>
+    /// <param name="right">The second value to compare.</param>
+    /// <returns>
+    /// <see langword="true"/> if the values are equal; otherwise, <see langword="false"/>.
+    /// </returns>
+    public static bool operator ==(NullableReadOnlySpanPair<TFirst, TSecond> left, NullableReadOnlySpanPair<TFirst, TSecond> right)
+        => left.HasValue ? right.HasValue && left._value == right._value : !right.HasValue;
+
+    /// <summary>
+    /// Compares two <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/> instances for inequality.
+    /// </summary>
+    /// <param name="left">The first value to compare.</param>
+    /// <param name="right">The second value to compare.</param>
+    /// <returns>
+    /// <see langword="true"/> if the values are not equal; otherwise, <see langword="false"/>.
+    /// </returns>
+    public static bool operator !=(NullableReadOnlySpanPair<TFirst, TSecond> left, NullableReadOnlySpanPair<TFirst, TSecond> right)
+        => left.HasValue ? !right.HasValue || left._value != right._value : right.HasValue;
 }

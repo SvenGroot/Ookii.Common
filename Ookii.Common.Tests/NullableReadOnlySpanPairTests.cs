@@ -111,4 +111,22 @@ public class NullableReadOnlySpanPairTests
         Assert.IsFalse(first.HasValue);
         Assert.IsFalse(second.HasValue);
     }
+
+    [TestMethod]
+    public void TestEquality()
+    {
+        var left = NullableReadOnlySpanPair.Create("test".AsSpan(), new ReadOnlySpan<byte>([1, 2, 3]));
+        var right = left;
+        Assert.IsTrue(left == right);
+        Assert.IsFalse(left != right);
+
+        right = NullableReadOnlySpanPair.Create("test2".AsSpan(), new ReadOnlySpan<byte>([4, 5, 6]));
+        Assert.IsFalse(left == right);
+        Assert.IsTrue(left != right);
+
+        left = default;
+        Assert.IsFalse(left == right);
+        Assert.IsTrue(left != right);
+        Assert.IsTrue(left == default);
+    }
 }

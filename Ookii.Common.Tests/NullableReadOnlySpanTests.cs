@@ -89,4 +89,23 @@ public class NullableReadOnlySpanTests
         Assert.AreEqual(123, target.Map(val => int.Parse(val)));
         Assert.AreEqual("123", target.Map(val => val.ToString()));
     }
+
+    [TestMethod]
+    public void TestEquality()
+    {
+        var left = new NullableReadOnlySpan<char>("test".AsSpan());
+        var right = new NullableReadOnlySpan<char>("test".AsSpan());
+        Assert.IsTrue(left == right);
+        Assert.IsFalse(left != right);
+
+        right = new NullableReadOnlySpan<char>("test2".AsSpan());
+        Assert.IsFalse(left == right);
+        Assert.IsTrue(left != right);
+
+        left = default;
+        Assert.IsFalse(left == right);
+        Assert.IsTrue(left != right);
+        Assert.IsTrue(left == default);
+        Assert.IsFalse(left != default);
+    }
 }

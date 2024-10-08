@@ -78,4 +78,59 @@ public readonly ref struct ReadOnlySpanPair<TFirst, TSecond>
     /// </summary>
     /// <returns>A string containing the two values in the format "(first, second)".</returns>
     override public string ToString() => $"({First.ToString()}, {Second.ToString()})";
+
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
+
+    /// <summary>
+    /// <note type="caution">
+    /// This method always throws an exception. Use the equality operator
+    /// instead.
+    /// </note>
+    /// Not supported. Throws a <see cref="NotSupportedException"/>.
+    /// </summary>
+    /// <param name="obj">Not supported.</param>
+    /// <returns>Not supported.</returns>
+    /// <exception cref="NotSupportedException">
+    /// Always thrown by this method.
+    /// </exception>
+    [Obsolete("Equals() should not be used on ReadOnlySpanPair<TFirst, TSecond>.", true)]
+    public override bool Equals(object? obj) => throw new NotSupportedException();
+
+    /// <summary>
+    /// <note type="caution">
+    /// This method always throws an exception.
+    /// </note>
+    /// Not supported. Throws a <see cref="NotSupportedException"/>.
+    /// </summary>
+    /// <returns>Not supported.</returns>
+    /// <exception cref="NotSupportedException">
+    /// Always thrown by this method.
+    /// </exception>
+    [Obsolete("GetHashCode() should not be used on ReadOnlySpanPair<TFirst, TSecond>.", true)]
+    public override int GetHashCode() => throw new NotSupportedException();
+
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
+
+    /// <summary>
+    /// Compares two <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> instances for equality.
+    /// </summary>
+    /// <param name="left">The first value to compare.</param>
+    /// <param name="right">The second value to compare.</param>
+    /// <returns>
+    /// <see langword="true"/> if the values are equal; otherwise, <see langword="false"/>.
+    /// </returns>
+    public static bool operator ==(ReadOnlySpanPair<TFirst, TSecond> left, ReadOnlySpanPair<TFirst, TSecond> right)
+        => left.First == right.First && left.Second == right.Second;
+
+    /// <summary>
+    /// Compares two <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> instances for inequality.
+    /// </summary>
+    /// <param name="left">The first value to compare.</param>
+    /// <param name="right">The second value to compare.</param>
+    /// <returns>
+    /// <see langword="true"/> if the values are not equal; otherwise, <see langword="false"/>.
+    /// </returns>
+    public static bool operator !=(ReadOnlySpanPair<TFirst, TSecond> left, ReadOnlySpanPair<TFirst, TSecond> right)
+        => left.First != right.First || left.Second != right.Second;
+
 }

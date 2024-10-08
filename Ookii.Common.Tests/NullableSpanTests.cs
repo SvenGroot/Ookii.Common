@@ -89,4 +89,23 @@ public class NullableSpanTests
         Assert.AreEqual(123, target.Map(val => int.Parse(val)));
         Assert.AreEqual("123", target.Map(val => val.ToString()));
     }
+
+    [TestMethod]
+    public void TestEquality()
+    {
+        var left = new NullableSpan<char>([.. "test"]);
+        var right = left;
+        Assert.IsTrue(left == right);
+        Assert.IsFalse(left != right);
+
+        right = new NullableSpan<char>([.. "test2"]);
+        Assert.IsFalse(left == right);
+        Assert.IsTrue(left != right);
+
+        left = default;
+        Assert.IsFalse(left == right);
+        Assert.IsTrue(left != right);
+        Assert.IsTrue(left == default);
+        Assert.IsFalse(left != default);
+    }
 }

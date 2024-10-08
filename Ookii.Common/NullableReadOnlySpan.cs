@@ -274,4 +274,26 @@ public readonly ref struct NullableReadOnlySpan<T>
     /// <see cref="HasValue"/> is <see langword="false"/>.
     /// </exception>
     public static explicit operator ReadOnlySpan<T>(NullableReadOnlySpan<T> value) => value.Value;
+
+    /// <summary>
+    /// Compares two <see cref="NullableReadOnlySpan{T}"/> instances for equality.
+    /// </summary>
+    /// <param name="left">The first value to compare.</param>
+    /// <param name="right">The second value to compare.</param>
+    /// <returns>
+    /// <see langword="true"/> if the values are equal; otherwise, <see langword="false"/>.
+    /// </returns>
+    public static bool operator ==(NullableReadOnlySpan<T> left, NullableReadOnlySpan<T> right)
+        => left.HasValue ? right.HasValue && left._value == right._value : !right.HasValue;
+
+    /// <summary>
+    /// Compares two <see cref="NullableReadOnlySpan{T}"/> instances for inequality.
+    /// </summary>
+    /// <param name="left">The first value to compare.</param>
+    /// <param name="right">The second value to compare.</param>
+    /// <returns>
+    /// <see langword="true"/> if the values are not equal; otherwise, <see langword="false"/>.
+    /// </returns>
+    public static bool operator !=(NullableReadOnlySpan<T> left, NullableReadOnlySpan<T> right)
+        => left.HasValue ? !right.HasValue || left._value != right._value : right.HasValue;
 }
