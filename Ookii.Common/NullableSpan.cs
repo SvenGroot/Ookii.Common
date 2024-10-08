@@ -3,52 +3,52 @@
 namespace Ookii.Common;
 
 /// <summary>
-/// Represents a <see cref="ReadOnlySpan{T}"/> that may or may not have a value.
+/// Represents a <see cref="Span{T}"/> that may or may not have a value.
 /// </summary>
-/// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
-public readonly ref struct NullableReadOnlySpan<T>
+/// <typeparam name="T">The type of the items in the <see cref="Span{T}"/>.</typeparam>
+public readonly ref struct NullableSpan<T>
 {
     /// <summary>
-    /// A function that maps a <see cref="ReadOnlySpan{T}"/> to another <see cref="ReadOnlySpan{T}"/>.
-    /// </summary>
-    /// <typeparam name="U">The type of the items in the resulting <see cref="ReadOnlySpan{T}"/>.</typeparam>
-    /// <param name="value">The value to map.</param>
-    /// <returns>The mapped value.</returns>
-    public delegate ReadOnlySpan<U> MapReadOnlyFunc<U>(ReadOnlySpan<T> value);
-
-    /// <summary>
-    /// A function that maps a <see cref="ReadOnlySpan{T}"/> to another <see cref="Span{T}"/>.
+    /// A function that maps a <see cref="Span{T}"/> to another <see cref="Span{T}"/>.
     /// </summary>
     /// <typeparam name="U">The type of the items in the resulting <see cref="Span{T}"/>.</typeparam>
     /// <param name="value">The value to map.</param>
     /// <returns>The mapped value.</returns>
-    public delegate Span<U> MapSpanFunc<U>(ReadOnlySpan<T> value);
+    public delegate ReadOnlySpan<U> MapReadOnlyFunc<U>(Span<T> value);
 
     /// <summary>
-    /// A function that maps a <see cref="ReadOnlySpan{T}"/> to a <typeparamref name="U"/>.
+    /// A function that maps a <see cref="Span{T}"/> to another <see cref="Span{T}"/>.
+    /// </summary>
+    /// <typeparam name="U">The type of the items in the resulting <see cref="Span{T}"/>.</typeparam>
+    /// <param name="value">The value to map.</param>
+    /// <returns>The mapped value.</returns>
+    public delegate Span<U> MapSpanFunc<U>(Span<T> value);
+
+    /// <summary>
+    /// A function that maps a <see cref="Span{T}"/> to a <typeparamref name="U"/>.
     /// </summary>
     /// <typeparam name="U">The type of the resulting value.</typeparam>
     /// <param name="value">The value to map.</param>
     /// <returns>The mapped value.</returns>
-    public delegate U MapStructFunc<U>(ReadOnlySpan<T> value)
+    public delegate U MapStructFunc<U>(Span<T> value)
         where U: struct;
 
     /// <summary>
-    /// A function that maps a <see cref="ReadOnlySpan{T}"/> to a <typeparamref name="U"/>.
+    /// A function that maps a <see cref="Span{T}"/> to a <typeparamref name="U"/>.
     /// </summary>
     /// <typeparam name="U">The type of the resulting value.</typeparam>
     /// <param name="value">The value to map.</param>
     /// <returns>The mapped value.</returns>
-    public delegate U MapClassFunc<U>(ReadOnlySpan<T> value)
+    public delegate U MapClassFunc<U>(Span<T> value)
         where U : class;
 
-    private readonly ReadOnlySpan<T> _value;
+    private readonly Span<T> _value;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="NullableReadOnlySpan{T}"/> structure.
+    /// Initializes a new instance of the <see cref="NullableSpan{T}"/> structure.
     /// </summary>
     /// <param name="value">The value that the structure will contain.</param>
-    public NullableReadOnlySpan(ReadOnlySpan<T> value)
+    public NullableSpan(Span<T> value)
     {
         _value = value;
         HasValue = true;
@@ -58,12 +58,12 @@ public readonly ref struct NullableReadOnlySpan<T>
     /// Gets the contained value.
     /// </summary>
     /// <value>
-    /// The contained <see cref="ReadOnlySpan{T}"/>.
+    /// The contained <see cref="Span{T}"/>.
     /// </value>
     /// <exception cref="InvalidOperationException">
     /// <see cref="HasValue"/> is <see langword="false"/>.
     /// </exception>
-    public ReadOnlySpan<T> Value => HasValue ? _value : throw new InvalidOperationException();
+    public Span<T> Value => HasValue ? _value : throw new InvalidOperationException();
 
     /// <summary>
     /// Gets a value that indicates whether this instance contains a value.
@@ -80,19 +80,19 @@ public readonly ref struct NullableReadOnlySpan<T>
     /// <param name="value">
     /// When this method returns, if the <see cref="HasValue"/> property is <see langword="true"/>,
     /// contains the value of the <see cref="Value"/> property; otherwise, an empty
-    /// <see cref="ReadOnlySpan{T}"/>.
+    /// <see cref="Span{T}"/>.
     /// </param>
     /// <returns>
     /// The value of the <see cref="HasValue"/> property.
     /// </returns>
-    public bool TryGetValue(out ReadOnlySpan<T> value)
+    public bool TryGetValue(out Span<T> value)
     {
         value = _value;
         return HasValue;
     }
 
     /// <summary>
-    /// Returns a string that represents the current <see cref="NullableReadOnlySpan{T}"/>.
+    /// Returns a string that represents the current <see cref="NullableSpan{T}"/>.
     /// </summary>
     /// <returns>
     /// If <see cref="HasValue"/> is <see langword="true"/>, a string representation of the
@@ -104,7 +104,7 @@ public readonly ref struct NullableReadOnlySpan<T>
     /// Returns the contained value, or the specified default value if there is no value.
     /// </summary>
     /// <param name="defaultValue">
-    /// The value to return if this <see cref="NullableReadOnlySpan{T}"/> is empty.
+    /// The value to return if this <see cref="NullableSpan{T}"/> is empty.
     /// </param>
     /// <returns>
     /// If the <see cref="HasValue"/> property is <see langword="true"/>, the <see cref="Value"/>
@@ -113,20 +113,20 @@ public readonly ref struct NullableReadOnlySpan<T>
     /// <remarks>
     /// <para>
     ///   This method provides an alternative to using the <c>??</c> operator, which does not work
-    ///   with the <see cref="NullableReadOnlySpan{T}"/> structure.
+    ///   with the <see cref="NullableSpan{T}"/> structure.
     /// </para>
     /// <para>
     ///   If the value used for <paramref name="defaultValue"/> is expensive to construct, consider
-    ///   using the <see cref="Or(ReadOnlySpanFunc{T})"/> overload instead.
+    ///   using the <see cref="Or(Span{T})"/> overload instead.
     /// </para>
     /// </remarks>
-    public ReadOnlySpan<T> Or(ReadOnlySpan<T> defaultValue) => HasValue ? _value : defaultValue;
+    public Span<T> Or(Span<T> defaultValue) => HasValue ? _value : defaultValue;
 
     /// <summary>
     /// Returns the contained value, or the value returned by the specified function if there is no value.
     /// </summary>
     /// <param name="defaultValueFunc">
-    /// The function that produces a value if this <see cref="NullableReadOnlySpan{T}"/> is empty.
+    /// The function that produces a value if this <see cref="NullableSpan{T}"/> is empty.
     /// </param>
     /// <returns>
     /// If the <see cref="HasValue"/> property is <see langword="true"/>, the <see cref="Value"/>
@@ -138,10 +138,10 @@ public readonly ref struct NullableReadOnlySpan<T>
     ///   property is <see langword="false"/>.
     /// </para>
     /// </remarks>
-    public ReadOnlySpan<T> Or(ReadOnlySpanFunc<T> defaultValueFunc) => HasValue ? _value : defaultValueFunc();
+    public Span<T> Or(SpanFunc<T> defaultValueFunc) => HasValue ? _value : defaultValueFunc();
 
     /// <summary>
-    /// Maps a <see cref="NullableReadOnlySpan{T}"/> to another value by applying a function to the
+    /// Maps a <see cref="NullableSpan{T}"/> to another value by applying a function to the
     /// contained value, or returns an empty value if there is no value.
     /// </summary>
     /// <typeparam name="U">
@@ -151,7 +151,7 @@ public readonly ref struct NullableReadOnlySpan<T>
     /// <returns>
     /// If the <see cref="HasValue"/> property is <see langword="true"/>, the result of applying
     /// <paramref name="mapFunc"/> to the <see cref="Value"/> property; otherwise, an empty
-    /// <see cref="NullableReadOnlySpan{T}"/>.
+    /// <see cref="NullableSpan{T}"/>.
     /// </returns>
     /// <remarks>
     /// <para>
@@ -163,7 +163,7 @@ public readonly ref struct NullableReadOnlySpan<T>
         => HasValue ? new NullableReadOnlySpan<U>(mapFunc(Value)) : default;
 
     /// <summary>
-    /// Maps a <see cref="NullableReadOnlySpan{T}"/> to another value by applying a function to the
+    /// Maps a <see cref="NullableSpan{T}"/> to another value by applying a function to the
     /// contained value, or returns an empty value if there is no value.
     /// </summary>
     /// <typeparam name="U">
@@ -173,7 +173,7 @@ public readonly ref struct NullableReadOnlySpan<T>
     /// <returns>
     /// If the <see cref="HasValue"/> property is <see langword="true"/>, the result of applying
     /// <paramref name="mapFunc"/> to the <see cref="Value"/> property; otherwise, an empty
-    /// <see cref="NullableReadOnlySpan{T}"/>.
+    /// <see cref="NullableSpan{T}"/>.
     /// </returns>
     /// <remarks>
     /// <para>
@@ -184,7 +184,7 @@ public readonly ref struct NullableReadOnlySpan<T>
     public NullableSpan<U> Map<U>(MapSpanFunc<U> mapFunc) => HasValue ? new NullableSpan<U>(mapFunc(Value)) : default;
 
     /// <summary>
-    /// Maps a <see cref="NullableReadOnlySpan{T}"/> to another value by applying a function to the
+    /// Maps a <see cref="NullableSpan{T}"/> to another value by applying a function to the
     /// contained value, or returns an empty value if there is no value.
     /// </summary>
     /// <typeparam name="U">
@@ -225,7 +225,7 @@ public readonly ref struct NullableReadOnlySpan<T>
     /// <exception cref="NotSupportedException">
     /// Always thrown by this method.
     /// </exception>
-    [Obsolete("Equals() should not be used on NullableReadOnlySpan<T>.", true)]
+    [Obsolete("Equals() should not be used on NullableSpan<T>.", true)]
     public override bool Equals(object? obj) => throw new NotSupportedException();
 
     /// <summary>
@@ -238,40 +238,25 @@ public readonly ref struct NullableReadOnlySpan<T>
     /// <exception cref="NotSupportedException">
     /// Always thrown by this method.
     /// </exception>
-    [Obsolete("GetHashCode() should not be used on NullableReadOnlySpan<T>.", true)]
+    [Obsolete("GetHashCode() should not be used on NullableSpan<T>.", true)]
     public override int GetHashCode() => throw new NotSupportedException();
 
 #pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
 
     /// <summary>
-    /// Implicitly converts a <see cref="NullableSpan{T}"/> to a <see cref="NullableReadOnlySpan{T}"/>.
+    /// Implicitly converts a <see cref="Span{T}"/> to a <see cref="NullableSpan{T}"/>.
     /// </summary>
-    /// <param name="value">The value that the <see cref="NullableReadOnlySpan{T}"/> will contain.</param>
-    /// <returns>A <see cref="NullableReadOnlySpan{T}"/> that contains the specified value.</returns> 
-    public static implicit operator NullableReadOnlySpan<T>(NullableSpan<T> value)
-        => value.HasValue ? new(value.Value) : default;
+    /// <param name="value">The value that the <see cref="NullableSpan{T}"/> will contain.</param>
+    /// <returns>A <see cref="NullableSpan{T}"/> that contains the specified value.</returns> 
+    public static implicit operator NullableSpan<T>(Span<T> value) => new(value);
 
     /// <summary>
-    /// Implicitly converts a <see cref="Span{T}"/> to a <see cref="NullableReadOnlySpan{T}"/>.
+    /// Explicitly converts a <see cref="NullableSpan{T}"/> to a <see cref="Span{T}"/>.
     /// </summary>
-    /// <param name="value">The value that the <see cref="NullableReadOnlySpan{T}"/> will contain.</param>
-    /// <returns>A <see cref="NullableReadOnlySpan{T}"/> that contains the specified value.</returns> 
-    public static implicit operator NullableReadOnlySpan<T>(Span<T> value) => new(value);
-
-    /// <summary>
-    /// Implicitly converts a <see cref="ReadOnlySpan{T}"/> to a <see cref="NullableReadOnlySpan{T}"/>.
-    /// </summary>
-    /// <param name="value">The value that the <see cref="NullableReadOnlySpan{T}"/> will contain.</param>
-    /// <returns>A <see cref="NullableReadOnlySpan{T}"/> that contains the specified value.</returns> 
-    public static implicit operator NullableReadOnlySpan<T>(ReadOnlySpan<T> value) => new(value);
-
-    /// <summary>
-    /// Explicitly converts a <see cref="NullableReadOnlySpan{T}"/> to a <see cref="ReadOnlySpan{T}"/>.
-    /// </summary>
-    /// <param name="value">The <see cref="NullableReadOnlySpan{T}"/> to convert.</param>
+    /// <param name="value">The <see cref="NullableSpan{T}"/> to convert.</param>
     /// <returns>The value of the <see cref="Value"/> property.</returns>
     /// <exception cref="InvalidOperationException">
     /// <see cref="HasValue"/> is <see langword="false"/>.
     /// </exception>
-    public static explicit operator ReadOnlySpan<T>(NullableReadOnlySpan<T> value) => value.Value;
+    public static explicit operator Span<T>(NullableSpan<T> value) => value.Value;
 }
