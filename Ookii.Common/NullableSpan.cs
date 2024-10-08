@@ -138,7 +138,7 @@ public readonly ref struct NullableSpan<T>
     ///   property is <see langword="false"/>.
     /// </para>
     /// </remarks>
-    public Span<T> Or(SpanFunc<T> defaultValueFunc) => HasValue ? _value : defaultValueFunc();
+    public Span<T> OrElse(SpanFunc<T> defaultValueFunc) => HasValue ? _value : defaultValueFunc();
 
     /// <summary>
     /// Maps a <see cref="NullableSpan{T}"/> to another value by applying a function to the

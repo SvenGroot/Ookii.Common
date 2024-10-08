@@ -41,3 +41,19 @@ public delegate Span<TResult> SpanFunc<TResult>();
 /// The return value of the method that this delegate encapsulates.
 /// </returns>
 public delegate Span<TResult> SpanFunc<T, TResult>(T value);
+
+/// <summary>
+/// Encapsulates a method that returns a <see cref="ReadOnlySpanPair{TFirst, TSecond}"/>.
+/// </summary>
+/// <typeparam name="TResultFirst">
+/// The type of the items in the first value of the resulting
+/// <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/>.
+/// </typeparam>
+/// <typeparam name="TResultSecond">
+/// The type of the items in the second value of the resulting
+/// <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/>.
+/// </typeparam>
+/// <returns>
+/// The return value of the method that this delegate encapsulates.
+/// </returns>
+public delegate ReadOnlySpanPair<TResultFirst, TResultSecond> ReadOnlySpanPairFunc<TResultFirst, TResultSecond>();

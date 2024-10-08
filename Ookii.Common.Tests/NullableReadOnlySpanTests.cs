@@ -69,11 +69,11 @@ public class NullableReadOnlySpanTests
     {
         var target = new NullableReadOnlySpan<char>();
         Assert.AreEqual("test", target.Or("test".AsSpan()).ToString());
-        Assert.AreEqual("test", target.Or(() => "test".AsSpan()).ToString());
+        Assert.AreEqual("test", target.OrElse(() => "test".AsSpan()).ToString());
 
         target = "test".AsSpan();
         Assert.AreEqual("test", target.Or("test2".AsSpan()).ToString());
-        Assert.AreEqual("test", target.Or(() => "test2".AsSpan()).ToString());
+        Assert.AreEqual("test", target.OrElse(() => "test2".AsSpan()).ToString());
     }
 
     [TestMethod]

@@ -117,7 +117,7 @@ public readonly ref struct NullableReadOnlySpan<T>
     /// </para>
     /// <para>
     ///   If the value used for <paramref name="defaultValue"/> is expensive to construct, consider
-    ///   using the <see cref="Or(ReadOnlySpanFunc{T})"/> overload instead.
+    ///   using the <see cref="OrElse(ReadOnlySpanFunc{T})"/> overload instead.
     /// </para>
     /// </remarks>
     public ReadOnlySpan<T> Or(ReadOnlySpan<T> defaultValue) => HasValue ? _value : defaultValue;
@@ -138,7 +138,7 @@ public readonly ref struct NullableReadOnlySpan<T>
     ///   property is <see langword="false"/>.
     /// </para>
     /// </remarks>
-    public ReadOnlySpan<T> Or(ReadOnlySpanFunc<T> defaultValueFunc) => HasValue ? _value : defaultValueFunc();
+    public ReadOnlySpan<T> OrElse(ReadOnlySpanFunc<T> defaultValueFunc) => HasValue ? _value : defaultValueFunc();
 
     /// <summary>
     /// Maps a <see cref="NullableReadOnlySpan{T}"/> to another value by applying a function to the
