@@ -49,14 +49,6 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// <returns>The mapped value.</returns>
     public delegate ReadOnlySpanPair<TResultFirst, TResultSecond> MapReadOnlyFunc<TResultFirst, TResultSecond>(ReadOnlySpanPair<TFirst, TSecond> value);
 
-    ///// <summary>
-    ///// A function that maps a <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> to another <see cref="Span{T}"/>.
-    ///// </summary>
-    ///// <typeparam name="U">The type of the items in the resulting <see cref="Span{T}"/>.</typeparam>
-    ///// <param name="value">The value to map.</param>
-    ///// <returns>The mapped value.</returns>
-    //public delegate Span<U> MapSpanFunc<U>(ReadOnlySpanPair<TFirst, TSecond> value);
-
     /// <summary>
     /// A function that maps a <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> to a <typeparamref name="TResult"/>.
     /// </summary>
@@ -160,6 +152,32 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     }
 
     /// <summary>
+    /// Converts a <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/> to a pair of 
+    /// <see cref="NullableReadOnlySpan{T}"/>. values.
+    /// </summary>
+    /// <param name="first">
+    /// If <see cref="HasValue"/> is <see langword="true"/>, receives the first value, otherwise
+    /// an empty <see cref="NullableReadOnlySpan{T}"/>.
+    /// </param>
+    /// <param name="second">
+    /// If <see cref="HasValue"/> is <see langword="true"/>, receives the second value, otherwise
+    /// an empty <see cref="NullableReadOnlySpan{T}"/>.
+    /// </param>
+    public void Unzip(out NullableReadOnlySpan<TFirst> first, out NullableReadOnlySpan<TSecond> second)
+    {
+        if (HasValue)
+        {
+            first = _value.First;
+            second = _value.Second;
+        }
+        else
+        {
+            first = default;
+            second = default;
+        }
+    }
+
+    /// <summary>
     /// Returns a string that represents the current <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/>.
     /// </summary>
     /// <returns>
@@ -237,32 +255,11 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     public NullableReadOnlySpanPair<TResultFirst, TResultSecond> Map<TResultFirst, TResultSecond>(MapReadOnlyFunc<TResultFirst, TResultSecond> mapFunc)
         => HasValue ? new NullableReadOnlySpanPair<TResultFirst, TResultSecond>(mapFunc(Value)) : default;
 
-    ///// <summary>
-    ///// Maps a <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/> to another value by applying a function to the
-    ///// contained value, or returns an empty value if there is no value.
-    ///// </summary>
-    ///// <typeparam name="U">
-    ///// The type of the items in the resulting <see cref="NullableSpan{T}"/>.
-    ///// </typeparam>
-    ///// <param name="mapFunc">The function to apply to the contained value.</param>
-    ///// <returns>
-    ///// If the <see cref="HasValue"/> property is <see langword="true"/>, the result of applying
-    ///// <paramref name="mapFunc"/> to the <see cref="Value"/> property; otherwise, an empty
-    ///// <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/>.
-    ///// </returns>
-    ///// <remarks>
-    ///// <para>
-    /////   The function <paramref name="mapFunc"/> is only called if the <see cref="HasValue"/>
-    /////   property is <see langword="true"/>.
-    ///// </para>
-    ///// </remarks>
-    //public NullableSpan<U> Map<U>(MapSpanFunc<U> mapFunc) => HasValue ? new NullableSpan<U>(mapFunc(Value)) : default;
-
     /// <summary>
     /// Maps a <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/> to another value by applying a function to the
     /// contained value, or returns an empty value if there is no value.
     /// </summary>
-    /// <typeparam name="U">
+    /// <typeparam name="TResult">
     /// The result type of the map operation.
     /// </typeparam>
     /// <param name="mapFunc">The function to apply to the contained value.</param>
@@ -277,13 +274,13 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     ///   property is <see langword="true"/>.
     /// </para>
     /// </remarks>
-    public U? Map<U>(MapStructFunc<U> mapFunc)
-        where U : struct
+    public TResult? Map<TResult>(MapStructFunc<TResult> mapFunc)
+        where TResult : struct
         => HasValue ? mapFunc(Value) : null;
 
     /// <inheritdoc cref="Map{U}(MapStructFunc{U})"/>
-    public U? Map<U>(MapClassFunc<U> mapFunc)
-        where U : class
+    public TResult? Map<TResult>(MapClassFunc<TResult> mapFunc)
+        where TResult : class
         => HasValue ? mapFunc(Value) : null;
 
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
@@ -317,21 +314,6 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     public override int GetHashCode() => throw new NotSupportedException();
 
 #pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
-
-    ///// <summary>
-    ///// Implicitly converts a <see cref="NullableSpan{T}"/> to a <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/>.
-    ///// </summary>
-    ///// <param name="value">The value that the <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/> will contain.</param>
-    ///// <returns>A <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/> that contains the specified value.</returns> 
-    //public static implicit operator NullableReadOnlySpanPair<TFirst, TSecond>(NullableSpan<T> value)
-    //    => value.HasValue ? new(value.Value) : default;
-
-    ///// <summary>
-    ///// Implicitly converts a <see cref="Span{T}"/> to a <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/>.
-    ///// </summary>
-    ///// <param name="value">The value that the <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/> will contain.</param>
-    ///// <returns>A <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/> that contains the specified value.</returns> 
-    //public static implicit operator NullableReadOnlySpanPair<TFirst, TSecond>(Span<T> value) => new(value);
 
     /// <summary>
     /// Implicitly converts a <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> to a <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/>.

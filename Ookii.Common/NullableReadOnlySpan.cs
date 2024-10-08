@@ -144,7 +144,7 @@ public readonly ref struct NullableReadOnlySpan<T>
     /// Maps a <see cref="NullableReadOnlySpan{T}"/> to another value by applying a function to the
     /// contained value, or returns an empty value if there is no value.
     /// </summary>
-    /// <typeparam name="U">
+    /// <typeparam name="TResult">
     /// The type of the items in the resulting <see cref="NullableReadOnlySpan{T}"/>.
     /// </typeparam>
     /// <param name="mapFunc">The function to apply to the contained value.</param>
@@ -159,14 +159,14 @@ public readonly ref struct NullableReadOnlySpan<T>
     ///   property is <see langword="true"/>.
     /// </para>
     /// </remarks>
-    public NullableReadOnlySpan<U> Map<U>(MapReadOnlyFunc<U> mapFunc)
-        => HasValue ? new NullableReadOnlySpan<U>(mapFunc(Value)) : default;
+    public NullableReadOnlySpan<TResult> Map<TResult>(MapReadOnlyFunc<TResult> mapFunc)
+        => HasValue ? new NullableReadOnlySpan<TResult>(mapFunc(Value)) : default;
 
     /// <summary>
     /// Maps a <see cref="NullableReadOnlySpan{T}"/> to another value by applying a function to the
     /// contained value, or returns an empty value if there is no value.
     /// </summary>
-    /// <typeparam name="U">
+    /// <typeparam name="TResult">
     /// The type of the items in the resulting <see cref="NullableSpan{T}"/>.
     /// </typeparam>
     /// <param name="mapFunc">The function to apply to the contained value.</param>
@@ -181,13 +181,13 @@ public readonly ref struct NullableReadOnlySpan<T>
     ///   property is <see langword="true"/>.
     /// </para>
     /// </remarks>
-    public NullableSpan<U> Map<U>(MapSpanFunc<U> mapFunc) => HasValue ? new NullableSpan<U>(mapFunc(Value)) : default;
+    public NullableSpan<TResult> Map<TResult>(MapSpanFunc<TResult> mapFunc) => HasValue ? new NullableSpan<TResult>(mapFunc(Value)) : default;
 
     /// <summary>
     /// Maps a <see cref="NullableReadOnlySpan{T}"/> to another value by applying a function to the
     /// contained value, or returns an empty value if there is no value.
     /// </summary>
-    /// <typeparam name="U">
+    /// <typeparam name="TResult">
     /// The result type of the map operation.
     /// </typeparam>
     /// <param name="mapFunc">The function to apply to the contained value.</param>
@@ -202,13 +202,13 @@ public readonly ref struct NullableReadOnlySpan<T>
     ///   property is <see langword="true"/>.
     /// </para>
     /// </remarks>
-    public U? Map<U>(MapStructFunc<U> mapFunc)
-        where U : struct
+    public TResult? Map<TResult>(MapStructFunc<TResult> mapFunc)
+        where TResult : struct
         => HasValue ? mapFunc(Value) : null;
 
     /// <inheritdoc cref="Map{U}(MapStructFunc{U})"/>
-    public U? Map<U>(MapClassFunc<U> mapFunc)
-        where U : class
+    public TResult? Map<TResult>(MapClassFunc<TResult> mapFunc)
+        where TResult : class
         => HasValue ? mapFunc(Value) : null;
 
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
