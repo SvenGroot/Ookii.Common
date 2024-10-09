@@ -81,12 +81,12 @@ public class NullableSpanTests
     {
         var target = new NullableSpan<char>();
         Assert.IsFalse(target.Map(val => Encoding.UTF8.GetBytes(val.ToArray()).AsSpan()).HasValue);
-        Assert.IsNull(target.Map(val => int.Parse(val)));
+        Assert.IsNull(target.Map(val => val.Length));
         Assert.IsNull(target.Map(val => val.ToString()));
 
         target = "123".ToArray().AsSpan();
         Assert.IsTrue(target.Map(val => Encoding.UTF8.GetBytes(val.ToArray()).AsSpan()).HasValue);
-        Assert.AreEqual(123, target.Map(val => int.Parse(val)));
+        Assert.AreEqual(3, target.Map(val => val.Length));
         Assert.AreEqual("123", target.Map(val => val.ToString()));
     }
 
