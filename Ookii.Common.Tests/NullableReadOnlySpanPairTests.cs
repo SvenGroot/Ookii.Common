@@ -40,11 +40,11 @@ public class NullableReadOnlySpanPairTests
         var target = NullableReadOnlySpanPair.Create("test".AsSpan(), new ReadOnlySpan<byte>([1, 2, 3]));
         Assert.IsTrue(target.HasValue);
         Assert.IsTrue(target.TryGetValue(out var value));
-        Assert.AreEqual("test", value.First.ToString());
-        Assert.AreEqual("test", target.Value.First.ToString());
-        Assert.AreEqual("test", ((ReadOnlySpanPair<char, byte>)target).First.ToString());
-        CollectionAssert.AreEqual(new byte[] { 1, 2, 3 }, value.Second.ToArray());
-        CollectionAssert.AreEqual(new byte[] { 1, 2, 3 }, target.Value.Second.ToArray());
+        Assert.AreEqual("test", value.Item1.ToString());
+        Assert.AreEqual("test", target.Value.Item1.ToString());
+        Assert.AreEqual("test", ((ReadOnlySpanPair<char, byte>)target).Item1.ToString());
+        CollectionAssert.AreEqual(new byte[] { 1, 2, 3 }, value.Item2.ToArray());
+        CollectionAssert.AreEqual(new byte[] { 1, 2, 3 }, target.Value.Item2.ToArray());
 
         // Implicit conversion
         target = ReadOnlySpanPair.Create("test2".AsSpan(), new ReadOnlySpan<byte>([4, 5, 6]));
@@ -82,20 +82,20 @@ public class NullableReadOnlySpanPairTests
     public void TestMap()
     {
         var target = NullableReadOnlySpanPair.Create("test".AsSpan(), new ReadOnlySpan<byte>([1, 2, 3]));
-        Assert.AreEqual("testSystem.ReadOnlySpan<Byte>[3]", target.Map((value) => value.First.ToString() + value.Second.ToString()));
-        var result = target.Map((value) => (value.First.ToString(), value.Second.ToArray()));
+        Assert.AreEqual("testSystem.ReadOnlySpan<Byte>[3]", target.Map((value) => value.Item1.ToString() + value.Item2.ToString()));
+        var result = target.Map((value) => (value.Item1.ToString(), value.Item2.ToArray()));
         Assert.IsNotNull(result);
         Assert.AreEqual("test", result.Value.Item1);
         CollectionAssert.AreEqual(new byte[] { 1, 2, 3 }, result.Value.Item2);
-        var result2 = target.Map(value => ReadOnlySpanPair.Create(value.Second, value.First));
+        var result2 = target.Map(value => ReadOnlySpanPair.Create(value.Item2, value.Item1));
         Assert.IsTrue(result2.HasValue);
-        CollectionAssert.AreEqual(new byte[] { 1, 2, 3 }, result2.Value.First.ToArray());
-        Assert.AreEqual("test", result2.Value.Second.ToString());
+        CollectionAssert.AreEqual(new byte[] { 1, 2, 3 }, result2.Value.Item1.ToArray());
+        Assert.AreEqual("test", result2.Value.Item2.ToString());
 
         target = default;
-        Assert.IsNull(target.Map((value) => value.First.ToString() + value.Second.ToString()));
-        Assert.IsNull(target.Map((value) => (value.First.ToString(), value.Second.ToArray())));
-        Assert.IsFalse(target.Map(value => ReadOnlySpanPair.Create(value.Second, value.First)).HasValue);
+        Assert.IsNull(target.Map((value) => value.Item1.ToString() + value.Item2.ToString()));
+        Assert.IsNull(target.Map((value) => (value.Item1.ToString(), value.Item2.ToArray())));
+        Assert.IsFalse(target.Map(value => ReadOnlySpanPair.Create(value.Item2, value.Item1)).HasValue);
     }
 
     [TestMethod]

@@ -146,8 +146,8 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// </returns>
     public bool TryGetValue(out ReadOnlySpan<TFirst> first, out ReadOnlySpan<TSecond> second)
     {
-        first = _value.First;
-        second = _value.Second;
+        first = _value.Item1;
+        second = _value.Item2;
         return HasValue;
     }
 
@@ -167,8 +167,8 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     {
         if (HasValue)
         {
-            first = _value.First;
-            second = _value.Second;
+            first = _value.Item1;
+            second = _value.Item2;
         }
         else
         {

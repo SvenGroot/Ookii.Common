@@ -42,8 +42,8 @@ public readonly ref struct ReadOnlySpanPair<TFirst, TSecond>
     /// <param name="second">The second value.</param>
     public ReadOnlySpanPair(ReadOnlySpan<TFirst> first, ReadOnlySpan<TSecond> second)
     {
-        First = first;
-        Second = second;
+        Item1 = first;
+        Item2 = second;
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ public readonly ref struct ReadOnlySpanPair<TFirst, TSecond>
     /// <value>
     /// The first <see cref="ReadOnlySpan{T}"/> in the pair.
     /// </value>
-    public readonly ReadOnlySpan<TFirst> First { get; }
+    public readonly ReadOnlySpan<TFirst> Item1 { get; }
 
     /// <summary>
     /// Gets the second value of the pair.
@@ -60,7 +60,7 @@ public readonly ref struct ReadOnlySpanPair<TFirst, TSecond>
     /// <value>
     /// The second <see cref="ReadOnlySpan{T}"/> in the pair.
     /// </value>
-    public readonly ReadOnlySpan<TSecond> Second { get; }
+    public readonly ReadOnlySpan<TSecond> Item2 { get; }
 
     /// <summary>
     /// Deconstructs the pair into two <see cref="ReadOnlySpan{T}"/> instances.
@@ -69,15 +69,15 @@ public readonly ref struct ReadOnlySpanPair<TFirst, TSecond>
     /// <param name="second">Receives the second value.</param>
     public void Deconstruct(out ReadOnlySpan<TFirst> first, out ReadOnlySpan<TSecond> second)
     {
-        first = First;
-        second = Second;
+        first = Item1;
+        second = Item2;
     }
 
     /// <summary>
     /// Returns a string representation of the current <see cref="ReadOnlySpanPair{TFirst, TSecond}"/>.
     /// </summary>
     /// <returns>A string containing the two values in the format "(first, second)".</returns>
-    override public string ToString() => $"({First.ToString()}, {Second.ToString()})";
+    override public string ToString() => $"({Item1.ToString()}, {Item2.ToString()})";
 
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
 
@@ -120,7 +120,7 @@ public readonly ref struct ReadOnlySpanPair<TFirst, TSecond>
     /// <see langword="true"/> if the values are equal; otherwise, <see langword="false"/>.
     /// </returns>
     public static bool operator ==(ReadOnlySpanPair<TFirst, TSecond> left, ReadOnlySpanPair<TFirst, TSecond> right)
-        => left.First == right.First && left.Second == right.Second;
+        => left.Item1 == right.Item1 && left.Item2 == right.Item2;
 
     /// <summary>
     /// Compares two <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> instances for inequality.
@@ -131,6 +131,6 @@ public readonly ref struct ReadOnlySpanPair<TFirst, TSecond>
     /// <see langword="true"/> if the values are not equal; otherwise, <see langword="false"/>.
     /// </returns>
     public static bool operator !=(ReadOnlySpanPair<TFirst, TSecond> left, ReadOnlySpanPair<TFirst, TSecond> right)
-        => left.First != right.First || left.Second != right.Second;
+        => left.Item1 != right.Item1 || left.Item2 != right.Item2;
 
 }

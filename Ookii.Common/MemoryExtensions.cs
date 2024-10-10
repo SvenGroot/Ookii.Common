@@ -6,7 +6,7 @@ namespace Ookii.Common;
 /// <summary>
 /// Provides extensions for the <see cref="ReadOnlySpan{T}"/> structure.
 /// </summary>
-public static class ReadOnlySpanExtensions
+public static class MemoryExtensions
 {
     /// <summary>
     /// Splits a <see cref="ReadOnlySpan{T}"/> into two parts at the first occurrence of a separator.
@@ -30,6 +30,28 @@ public static class ReadOnlySpanExtensions
         return new(span.Slice(0, index), span.Slice(index + 1));
     }
 
+    /// <summary>
+    /// Splits a <see cref="ReadOnlyMemory{T}"/> into two parts at the first occurrence of a separator.
+    /// </summary>
+    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlyMemory{T}"/>.</typeparam>
+    /// <param name="memory">The <see cref="ReadOnlyMemory{T}"/> to split.</param>
+    /// <param name="separator">The separator to split the span at.</param>
+    /// <returns>
+    /// If the separator was found, a tuple containing the parts before and after the separator;
+    /// otherwise, <see langword="null"/>.
+    /// </returns>
+    public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnce<T>(this ReadOnlyMemory<T> memory, T separator)
+        where T : IEquatable<T>
+    {
+        var index = memory.Span.IndexOf(separator);
+        if (index < 0)
+        {
+            return default;
+        }
+
+        return (memory.Slice(0, index), memory.Slice(index + 1));
+    }
+
     /// <inheritdoc cref="SplitOnce{T}(ReadOnlySpan{T}, T)"/>
     public static NullableReadOnlySpanPair<T, T> SplitOnce<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> separator)
         where T : IEquatable<T>
@@ -41,6 +63,19 @@ public static class ReadOnlySpanExtensions
         }
 
         return new(span.Slice(0, index), span.Slice(index + separator.Length));
+    }
+
+    /// <inheritdoc cref="SplitOnce{T}(ReadOnlyMemory{T}, T)"/>
+    public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnce<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> separator)
+        where T : IEquatable<T>
+    {
+        var index = memory.Span.IndexOf(separator);
+        if (index < 0)
+        {
+            return default;
+        }
+
+        return new(memory.Slice(0, index), memory.Slice(index + separator.Length));
     }
 
     /// <summary>
@@ -63,6 +98,28 @@ public static class ReadOnlySpanExtensions
         }
 
         return new(span.Slice(0, index), span.Slice(index + separator.Length));
+    }
+
+    /// <summary>
+    /// Splits a span of characters into two parts at the first occurrence of a separator.
+    /// </summary>
+    /// <param name="memory">The span of characters to split.</param>
+    /// <param name="separator">A span of characters containing the separator to split on.</param>
+    /// <param name="comparisonType">The type of string comparison to use to find the separator.</param>
+    /// <returns>
+    /// If the separator was found, a tuple containing the parts before and after the separator;
+    /// otherwise, <see langword="null"/>.
+    /// </returns>
+    public static (ReadOnlyMemory<char>, ReadOnlyMemory<char>)? SplitOnce(this ReadOnlyMemory<char> memory,
+        ReadOnlySpan<char> separator, StringComparison comparisonType)
+    {
+        var index = memory.Span.IndexOf(separator, comparisonType);
+        if (index < 0)
+        {
+            return default;
+        }
+
+        return new(memory.Slice(0, index), memory.Slice(index + separator.Length));
     }
 
     /// <summary>
@@ -104,6 +161,44 @@ public static class ReadOnlySpanExtensions
     }
 
     /// <summary>
+    /// Splits a span of characters into two parts at the first occurrence of a separator.
+    /// </summary>
+    /// <param name="memory">The span of characters to split.</param>
+    /// <param name="separator">A span of characters containing the separator to split on.</param>
+    /// <param name="culture">
+    /// The <see cref="CultureInfo"/> to use to perform string comparison when finding the
+    /// separator.
+    /// </param>
+    /// <param name="options">The options to use for the string comparison.</param>
+    /// <returns>
+    /// If the separator was found, a tuple containing the parts before and after the separator;
+    /// otherwise, <see langword="null"/>.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    ///   When using the .Net Standard 2.0 or 2.1 version of this library, this method may allocate
+    ///   strings to perform the comparison. This is because the <see cref="CompareInfo"/> class
+    ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
+    /// </para>
+    /// </remarks>
+    public static (ReadOnlyMemory<char>, ReadOnlyMemory<char>)? SplitOnce(this ReadOnlyMemory<char> memory,
+        ReadOnlySpan<char> separator, CultureInfo culture, CompareOptions options = CompareOptions.None)
+    {
+        if (culture == null)
+        {
+            throw new ArgumentNullException(nameof(culture));
+        }
+
+        var index = culture.CompareInfo.IndexOf(memory.Span, separator, options);
+        if (index < 0)
+        {
+            return default;
+        }
+
+        return new(memory.Slice(0, index), memory.Slice(index + separator.Length));
+    }
+
+    /// <summary>
     /// Splits a <see cref="ReadOnlySpan{T}"/> into two parts at the last occurrence of a separator.
     /// </summary>
     /// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
@@ -125,6 +220,28 @@ public static class ReadOnlySpanExtensions
         return new(span.Slice(0, index), span.Slice(index + 1));
     }
 
+    /// <summary>
+    /// Splits a <see cref="ReadOnlyMemory{T}"/> into two parts at the first occurrence of a separator.
+    /// </summary>
+    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlyMemory{T}"/>.</typeparam>
+    /// <param name="memory">The <see cref="ReadOnlyMemory{T}"/> to split.</param>
+    /// <param name="separator">The separator to split the span at.</param>
+    /// <returns>
+    /// If the separator was found, a tuple containing the parts before and after the separator;
+    /// otherwise, <see langword="null"/>.
+    /// </returns>
+    public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnceLast<T>(this ReadOnlyMemory<T> memory, T separator)
+        where T : IEquatable<T>
+    {
+        var index = memory.Span.LastIndexOf(separator);
+        if (index < 0)
+        {
+            return default;
+        }
+
+        return (memory.Slice(0, index), memory.Slice(index + 1));
+    }
+
     /// <inheritdoc cref="SplitOnce{T}(ReadOnlySpan{T}, T)"/>
     public static NullableReadOnlySpanPair<T, T> SplitOnceLast<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> separator)
         where T : IEquatable<T>
@@ -136,6 +253,19 @@ public static class ReadOnlySpanExtensions
         }
 
         return new(span.Slice(0, index), span.Slice(index + separator.Length));
+    }
+
+    /// <inheritdoc cref="SplitOnceLast{T}(ReadOnlyMemory{T}, T)"/>
+    public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnceLast<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> separator)
+        where T : IEquatable<T>
+    {
+        var index = memory.Span.LastIndexOf(separator);
+        if (index < 0)
+        {
+            return default;
+        }
+
+        return new(memory.Slice(0, index), memory.Slice(index + separator.Length));
     }
 
     /// <summary>
@@ -158,6 +288,28 @@ public static class ReadOnlySpanExtensions
         }
 
         return new(span.Slice(0, index), span.Slice(index + separator.Length));
+    }
+
+    /// <summary>
+    /// Splits a span of characters into two parts at the first occurrence of a separator.
+    /// </summary>
+    /// <param name="memory">The span of characters to split.</param>
+    /// <param name="separator">A span of characters containing the separator to split on.</param>
+    /// <param name="comparisonType">The type of string comparison to use to find the separator.</param>
+    /// <returns>
+    /// If the separator was found, a tuple containing the parts before and after the separator;
+    /// otherwise, <see langword="null"/>.
+    /// </returns>
+    public static (ReadOnlyMemory<char>, ReadOnlyMemory<char>)? SplitOnceLast(this ReadOnlyMemory<char> memory,
+        ReadOnlySpan<char> separator, StringComparison comparisonType)
+    {
+        var index = memory.Span.LastIndexOf(separator, comparisonType);
+        if (index < 0)
+        {
+            return default;
+        }
+
+        return new(memory.Slice(0, index), memory.Slice(index + separator.Length));
     }
 
     /// <summary>
@@ -199,6 +351,44 @@ public static class ReadOnlySpanExtensions
     }
 
     /// <summary>
+    /// Splits a span of characters into two parts at the first occurrence of a separator.
+    /// </summary>
+    /// <param name="memory">The span of characters to split.</param>
+    /// <param name="separator">A span of characters containing the separator to split on.</param>
+    /// <param name="culture">
+    /// The <see cref="CultureInfo"/> to use to perform string comparison when finding the
+    /// separator.
+    /// </param>
+    /// <param name="options">The options to use for the string comparison.</param>
+    /// <returns>
+    /// If the separator was found, a tuple containing the parts before and after the separator;
+    /// otherwise, <see langword="null"/>.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    ///   When using the .Net Standard 2.0 or 2.1 version of this library, this method may allocate
+    ///   strings to perform the comparison. This is because the <see cref="CompareInfo"/> class
+    ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
+    /// </para>
+    /// </remarks>
+    public static (ReadOnlyMemory<char>, ReadOnlyMemory<char>)? SplitOnceLast(this ReadOnlyMemory<char> memory,
+        ReadOnlySpan<char> separator, CultureInfo culture, CompareOptions options = CompareOptions.None)
+    {
+        if (culture == null)
+        {
+            throw new ArgumentNullException(nameof(culture));
+        }
+
+        var index = culture.CompareInfo.LastIndexOf(memory.Span, separator, options);
+        if (index < 0)
+        {
+            return default;
+        }
+
+        return new(memory.Slice(0, index), memory.Slice(index + separator.Length));
+    }
+
+    /// <summary>
     /// Removes a prefix from a <see cref="ReadOnlySpan{T}"/>.
     /// </summary>
     /// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
@@ -220,6 +410,27 @@ public static class ReadOnlySpanExtensions
     }
 
     /// <summary>
+    /// Removes a prefix from a <see cref="ReadOnlyMemory{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlyMemory{T}"/>.</typeparam>
+    /// <param name="memory">The <see cref="ReadOnlyMemory{T}"/> to remove the prefix from.</param>
+    /// <param name="prefix">The prefix to move.</param>
+    /// <returns>
+    /// If <paramref name="memory"/> starts with <paramref name="prefix"/>, returns the memory
+    /// without the prefix; otherwise, returns <see langword="null"/>.
+    /// </returns>
+    public static ReadOnlyMemory<T>? StripPrefix<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> prefix)
+        where T : IEquatable<T>
+    {
+        if (memory.Span.StartsWith(prefix))
+        {
+            return memory.Slice(prefix.Length);
+        }
+
+        return default;
+    }
+
+    /// <summary>
     /// Removes a prefix from a span of characters.
     /// </summary>
     /// <param name="span">The span of characters to remove the prefix from.</param>
@@ -235,6 +446,27 @@ public static class ReadOnlySpanExtensions
         if (span.StartsWith(prefix, comparisonType))
         {
             return span.Slice(prefix.Length);
+        }
+
+        return default;
+    }
+
+    /// <summary>
+    /// Removes a prefix from a span of characters.
+    /// </summary>
+    /// <param name="memory">The span of characters to remove the prefix from.</param>
+    /// <param name="prefix">The prefix to remove.</param>
+    /// <param name="comparisonType">The type of string comparison to use to match the prefix.</param>
+    /// <returns>
+    /// If <paramref name="memory"/> starts with <paramref name="prefix"/>, returns the memory
+    /// without the prefix; otherwise, returns <see langword="null"/>.
+    /// </returns>
+    public static ReadOnlyMemory<char>? StripPrefix(this ReadOnlyMemory<char> memory, ReadOnlySpan<char> prefix,
+        StringComparison comparisonType)
+    {
+        if (memory.Span.StartsWith(prefix, comparisonType))
+        {
+            return memory.Slice(prefix.Length);
         }
 
         return default;
@@ -277,6 +509,42 @@ public static class ReadOnlySpanExtensions
     }
 
     /// <summary>
+    /// Removes a prefix from a span of characters.
+    /// </summary>
+    /// <param name="memory">The span of characters to remove the prefix from.</param>
+    /// <param name="prefix">The prefix to remove.</param>
+    /// <param name="culture">
+    /// The <see cref="CultureInfo"/> to use to match the prefix.
+    /// </param>
+    /// <param name="options">The options to use for the string comparison.</param>
+    /// <returns>
+    /// If <paramref name="memory"/> starts with <paramref name="prefix"/>, returns the memory
+    /// without the prefix; otherwise, returns <see langword="null"/>.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    ///   When using the .Net Standard 2.0 or 2.1 version of this library, this method may allocate
+    ///   strings to perform the comparison. This is because the <see cref="CompareInfo"/> class
+    ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
+    /// </para>
+    /// </remarks>
+    public static ReadOnlyMemory<char>? StripPrefix(this ReadOnlyMemory<char> memory, ReadOnlySpan<char> prefix,
+        CultureInfo culture, CompareOptions options = CompareOptions.None)
+    {
+        if (culture == null)
+        {
+            throw new ArgumentNullException(nameof(culture));
+        }
+
+        if (culture.CompareInfo.IsPrefix(memory.Span, prefix, options))
+        {
+            return memory.Slice(prefix.Length);
+        }
+
+        return default;
+    }
+
+    /// <summary>
     /// Removes a suffix from a <see cref="ReadOnlySpan{T}"/>.
     /// </summary>
     /// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
@@ -291,7 +559,28 @@ public static class ReadOnlySpanExtensions
     {
         if (span.EndsWith(suffix))
         {
-            return span.Slice(suffix.Length);
+            return span.Slice(0, span.Length - suffix.Length);
+        }
+
+        return default;
+    }
+
+    /// <summary>
+    /// Removes a suffix from a <see cref="ReadOnlyMemory{T}"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlyMemory{T}"/>.</typeparam>
+    /// <param name="memory">The <see cref="ReadOnlyMemory{T}"/> to remove the prefix from.</param>
+    /// <param name="suffix">The prefix to move.</param>
+    /// <returns>
+    /// If <paramref name="memory"/> starts with <paramref name="prefix"/>, returns the memory
+    /// without the suffix; otherwise, returns <see langword="null"/>.
+    /// </returns>
+    public static ReadOnlyMemory<T>? StripSuffix<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> suffix)
+        where T : IEquatable<T>
+    {
+        if (memory.Span.EndsWith(suffix))
+        {
+            return memory.Slice(0, memory.Length - suffix.Length);
         }
 
         return default;
@@ -312,7 +601,28 @@ public static class ReadOnlySpanExtensions
     {
         if (span.EndsWith(suffix, comparisonType))
         {
-            return span.Slice(suffix.Length);
+            return span.Slice(0, span.Length - suffix.Length);
+        }
+
+        return default;
+    }
+
+    /// <summary>
+    /// Removes a suffix from a span of characters.
+    /// </summary>
+    /// <param name="memory">The span of characters to remove the suffix from.</param>
+    /// <param name="suffix">The suffix to remove.</param>
+    /// <param name="comparisonType">The type of string comparison to use to match the suffix.</param>
+    /// <returns>
+    /// If <paramref name="memory"/> starts with <paramref name="suffix"/>, returns the memory
+    /// without the suffix; otherwise, returns <see langword="null"/>.
+    /// </returns>
+    public static ReadOnlyMemory<char>? StripSuffix(this ReadOnlyMemory<char> memory, ReadOnlySpan<char> suffix,
+        StringComparison comparisonType)
+    {
+        if (memory.Span.EndsWith(suffix, comparisonType))
+        {
+            return memory.Slice(0, memory.Length - suffix.Length);
         }
 
         return default;
@@ -348,7 +658,43 @@ public static class ReadOnlySpanExtensions
 
         if (culture.CompareInfo.IsSuffix(span, suffix, options))
         {
-            return span.Slice(suffix.Length);
+            return span.Slice(0, span.Length - suffix.Length);
+        }
+
+        return default;
+    }
+
+    /// <summary>
+    /// Removes a suffix from a span of characters.
+    /// </summary>
+    /// <param name="memory">The span of characters to remove the suffix from.</param>
+    /// <param name="suffix">The suffix to remove.</param>
+    /// <param name="culture">
+    /// The <see cref="CultureInfo"/> to use to match the suffix.
+    /// </param>
+    /// <param name="options">The options to use for the string comparison.</param>
+    /// <returns>
+    /// If <paramref name="memory"/> starts with <paramref name="suffix"/>, returns the memory
+    /// without the suffix; otherwise, returns <see langword="null"/>.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    ///   When using the .Net Standard 2.0 or 2.1 version of this library, this method may allocate
+    ///   strings to perform the comparison. This is because the <see cref="CompareInfo"/> class
+    ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
+    /// </para>
+    /// </remarks>
+    public static ReadOnlyMemory<char>? StripSuffix(this ReadOnlyMemory<char> memory, ReadOnlySpan<char> suffix,
+        CultureInfo culture, CompareOptions options = CompareOptions.None)
+    {
+        if (culture == null)
+        {
+            throw new ArgumentNullException(nameof(culture));
+        }
+
+        if (culture.CompareInfo.IsSuffix(memory.Span, suffix, options))
+        {
+            return memory.Slice(0, memory.Length - suffix.Length);
         }
 
         return default;
