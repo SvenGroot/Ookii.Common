@@ -572,7 +572,7 @@ public static class MemoryExtensions
     /// <param name="memory">The <see cref="ReadOnlyMemory{T}"/> to remove the prefix from.</param>
     /// <param name="suffix">The prefix to move.</param>
     /// <returns>
-    /// If <paramref name="memory"/> starts with <paramref name="prefix"/>, returns the memory
+    /// If <paramref name="memory"/> starts with <paramref name="suffix"/>, returns the memory
     /// without the suffix; otherwise, returns <see langword="null"/>.
     /// </returns>
     public static ReadOnlyMemory<T>? StripSuffix<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> suffix)
