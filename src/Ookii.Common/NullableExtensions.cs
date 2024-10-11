@@ -114,9 +114,9 @@ public static class NullableExtensions
         => self is T value ? new NullableReadOnlySpan<TResult>(map(value)) : default;
 
     /// <inheritdoc cref="Map{T, TResult}(T?, ReadOnlySpanFunc{T, TResult})"/>
-    public static NullableReadOnlySpan<U> Map<T, U>(this T? self, ReadOnlySpanFunc<T, U> map)
+    public static NullableReadOnlySpan<TResult> Map<T, TResult>(this T? self, ReadOnlySpanFunc<T, TResult> map)
         where T : class
-        => self is T value ? new NullableReadOnlySpan<U>(map(value)) : default;
+        => self is T value ? new NullableReadOnlySpan<TResult>(map(value)) : default;
 
     /// <summary>
     /// Applies a mapping function a value that may be <see langword="null"/>.
