@@ -20,6 +20,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='net8.0'">
@@ -37,7 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="icon.png" Pack="True" PackagePath=""/>
+    <None Include="icon.png" Pack="True" PackagePath="" />
+    <None Include="PackageReadme.md" Pack="True" PackagePath="" />
   </ItemGroup>
 
 </Project>
