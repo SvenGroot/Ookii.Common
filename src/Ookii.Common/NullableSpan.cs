@@ -11,36 +11,36 @@ public readonly ref struct NullableSpan<T>
     /// <summary>
     /// A function that maps a <see cref="Span{T}"/> to another <see cref="Span{T}"/>.
     /// </summary>
-    /// <typeparam name="U">The type of the items in the resulting <see cref="Span{T}"/>.</typeparam>
+    /// <typeparam name="TResult">The type of the items in the resulting <see cref="Span{T}"/>.</typeparam>
     /// <param name="value">The value to map.</param>
     /// <returns>The mapped value.</returns>
-    public delegate ReadOnlySpan<U> MapReadOnlyFunc<U>(Span<T> value);
+    public delegate ReadOnlySpan<TResult> MapReadOnlyFunc<TResult>(Span<T> value);
 
     /// <summary>
     /// A function that maps a <see cref="Span{T}"/> to another <see cref="Span{T}"/>.
     /// </summary>
-    /// <typeparam name="U">The type of the items in the resulting <see cref="Span{T}"/>.</typeparam>
+    /// <typeparam name="TResult">The type of the items in the resulting <see cref="Span{T}"/>.</typeparam>
     /// <param name="value">The value to map.</param>
     /// <returns>The mapped value.</returns>
-    public delegate Span<U> MapSpanFunc<U>(Span<T> value);
+    public delegate Span<TResult> MapSpanFunc<TResult>(Span<T> value);
 
     /// <summary>
-    /// A function that maps a <see cref="Span{T}"/> to a <typeparamref name="U"/>.
+    /// A function that maps a <see cref="Span{T}"/> to a <typeparamref name="TResult"/>.
     /// </summary>
-    /// <typeparam name="U">The type of the resulting value.</typeparam>
+    /// <typeparam name="TResult">The type of the resulting value.</typeparam>
     /// <param name="value">The value to map.</param>
     /// <returns>The mapped value.</returns>
-    public delegate U MapStructFunc<U>(Span<T> value)
-        where U: struct;
+    public delegate TResult MapStructFunc<TResult>(Span<T> value)
+        where TResult: struct;
 
     /// <summary>
-    /// A function that maps a <see cref="Span{T}"/> to a <typeparamref name="U"/>.
+    /// A function that maps a <see cref="Span{T}"/> to a <typeparamref name="TResult"/>.
     /// </summary>
-    /// <typeparam name="U">The type of the resulting value.</typeparam>
+    /// <typeparam name="TResult">The type of the resulting value.</typeparam>
     /// <param name="value">The value to map.</param>
     /// <returns>The mapped value.</returns>
-    public delegate U MapClassFunc<U>(Span<T> value)
-        where U : class;
+    public delegate TResult MapClassFunc<TResult>(Span<T> value)
+        where TResult : class;
 
     private readonly Span<T> _value;
 
@@ -206,7 +206,7 @@ public readonly ref struct NullableSpan<T>
         where TResult : struct
         => HasValue ? mapFunc(Value) : null;
 
-    /// <inheritdoc cref="Map{U}(MapStructFunc{U})"/>
+    /// <inheritdoc cref="Map{TResult}(MapStructFunc{TResult})"/>
     public TResult? Map<TResult>(MapClassFunc<TResult> mapFunc)
         where TResult : class
         => HasValue ? mapFunc(Value) : null;

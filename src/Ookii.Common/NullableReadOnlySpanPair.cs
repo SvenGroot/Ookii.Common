@@ -278,7 +278,7 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
         where TResult : struct
         => HasValue ? mapFunc(Value) : null;
 
-    /// <inheritdoc cref="Map{U}(MapStructFunc{U})"/>
+    /// <inheritdoc cref="Map{TResult}(MapStructFunc{TResult})"/>
     public TResult? Map<TResult>(MapClassFunc<TResult> mapFunc)
         where TResult : class
         => HasValue ? mapFunc(Value) : null;
