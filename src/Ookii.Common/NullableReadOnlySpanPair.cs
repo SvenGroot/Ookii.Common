@@ -203,10 +203,11 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// </para>
     /// <para>
     ///   If the value used for <paramref name="defaultValue"/> is expensive to construct, consider
-    ///   using the <see cref="OrElse(ReadOnlySpanPairFunc{TFirst, TSecond})"/> overload instead.
+    ///   using the <see cref="GetValueOrElse(ReadOnlySpanPairFunc{TFirst, TSecond})"/> overload
+    ///   instead.
     /// </para>
     /// </remarks>
-    public ReadOnlySpanPair<TFirst, TSecond> Or(ReadOnlySpanPair<TFirst, TSecond> defaultValue)
+    public ReadOnlySpanPair<TFirst, TSecond> GetValueOrDefault(ReadOnlySpanPair<TFirst, TSecond> defaultValue = default)
         => HasValue ? _value : defaultValue;
 
     /// <summary>
@@ -225,7 +226,7 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     ///   property is <see langword="false"/>.
     /// </para>
     /// </remarks>
-    public ReadOnlySpanPair<TFirst, TSecond> OrElse(ReadOnlySpanPairFunc<TFirst, TSecond> defaultValueFunc)
+    public ReadOnlySpanPair<TFirst, TSecond> GetValueOrElse(ReadOnlySpanPairFunc<TFirst, TSecond> defaultValueFunc)
         => HasValue ? _value : defaultValueFunc();
 
     /// <summary>

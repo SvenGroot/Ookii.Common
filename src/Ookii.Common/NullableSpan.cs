@@ -117,10 +117,10 @@ public readonly ref struct NullableSpan<T>
     /// </para>
     /// <para>
     ///   If the value used for <paramref name="defaultValue"/> is expensive to construct, consider
-    ///   using the <see cref="Or(Span{T})"/> overload instead.
+    ///   using the <see cref="GetValueOrDefault(Span{T})"/> overload instead.
     /// </para>
     /// </remarks>
-    public Span<T> Or(Span<T> defaultValue) => HasValue ? _value : defaultValue;
+    public Span<T> GetValueOrDefault(Span<T> defaultValue = default) => HasValue ? _value : defaultValue;
 
     /// <summary>
     /// Returns the contained value, or the value returned by the specified function if there is no value.
@@ -138,7 +138,7 @@ public readonly ref struct NullableSpan<T>
     ///   property is <see langword="false"/>.
     /// </para>
     /// </remarks>
-    public Span<T> OrElse(SpanFunc<T> defaultValueFunc) => HasValue ? _value : defaultValueFunc();
+    public Span<T> GetValueOrElse(SpanFunc<T> defaultValueFunc) => HasValue ? _value : defaultValueFunc();
 
     /// <summary>
     /// Maps a <see cref="NullableSpan{T}"/> to another value by applying a function to the

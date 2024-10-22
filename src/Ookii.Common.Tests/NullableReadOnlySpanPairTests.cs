@@ -58,12 +58,12 @@ public class NullableReadOnlySpanPairTests
     public void TestOr()
     {
         var target = NullableReadOnlySpanPair.Create("test".AsSpan(), new ReadOnlySpan<byte>([1, 2, 3]));
-        var (first, second) = target.Or(new("test2".AsSpan(), [4, 5, 6]));
+        var (first, second) = target.GetValueOrDefault(new("test2".AsSpan(), [4, 5, 6]));
         Assert.AreEqual("test", first.ToString());
         CollectionAssert.AreEqual(new byte[] { 1, 2, 3 }, second.ToArray());
 
         target = default;
-        (first, second) = target.Or(new("test2".AsSpan(), [4, 5, 6]));
+        (first, second) = target.GetValueOrDefault(new("test2".AsSpan(), [4, 5, 6]));
         Assert.AreEqual("test2", first.ToString());
         CollectionAssert.AreEqual(new byte[] { 4, 5, 6 }, second.ToArray());
     }

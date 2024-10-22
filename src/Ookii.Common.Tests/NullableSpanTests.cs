@@ -68,12 +68,12 @@ public class NullableSpanTests
     public void TestOr()
     {
         var target = new NullableSpan<char>();
-        Assert.AreEqual("test", target.Or([.. "test"]).ToString());
-        Assert.AreEqual("test", target.OrElse(() => "test".ToArray().AsSpan()).ToString());
+        Assert.AreEqual("test", target.GetValueOrDefault([.. "test"]).ToString());
+        Assert.AreEqual("test", target.GetValueOrElse(() => "test".ToArray().AsSpan()).ToString());
 
         target = "test".ToArray().AsSpan();
-        Assert.AreEqual("test", target.Or([.. "test2"]).ToString());
-        Assert.AreEqual("test", target.OrElse(() => "test2".ToArray().AsSpan()).ToString());
+        Assert.AreEqual("test", target.GetValueOrDefault([.. "test2"]).ToString());
+        Assert.AreEqual("test", target.GetValueOrElse(() => "test2".ToArray().AsSpan()).ToString());
     }
 
     [TestMethod]
