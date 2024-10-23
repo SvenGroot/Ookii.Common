@@ -199,6 +199,52 @@ public static class MemoryExtensions
     }
 
     /// <summary>
+    /// Splits a <see cref="ReadOnlySpan{T}"/> into two parts at the first occurrence of any of the
+    /// specified separators.
+    /// </summary>
+    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
+    /// <param name="span">The <see cref="ReadOnlySpan{T}"/> to split.</param>
+    /// <param name="separators">The set of separators to split the span at.</param>
+    /// <returns>
+    /// If a separator was found, a tuple containing the parts before and after the separator;
+    /// otherwise, <see langword="null"/>.
+    /// </returns>
+    public static NullableReadOnlySpanPair<T, T> SplitOnceAny<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> separators)
+        where T : IEquatable<T>
+    {
+        var index = span.IndexOfAny(separators);
+        if (index < 0)
+        {
+            return default;
+        }
+
+        return new(span.Slice(0, index), span.Slice(index + 1));
+    }
+
+    /// <summary>
+    /// Splits a <see cref="ReadOnlySpan{T}"/> into two parts at the first occurrence of any of the
+    /// specified separators.
+    /// </summary>
+    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
+    /// <param name="memory">The <see cref="ReadOnlySpan{T}"/> to split.</param>
+    /// <param name="separators">The set of separators to split the span at.</param>
+    /// <returns>
+    /// If a separator was found, a <see cref="NullableReadOnlySpanPair{T, T}"/> containing the
+    /// parts before and after the separator; otherwise, an empty <see cref="NullableReadOnlySpanPair{T, T}"/>.
+    /// </returns>
+    public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnceAny<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> separators)
+        where T : IEquatable<T>
+    {
+        var index = memory.Span.IndexOfAny(separators);
+        if (index < 0)
+        {
+            return null;
+        }
+
+        return new(memory.Slice(0, index), memory.Slice(index + 1));
+    }
+
+    /// <summary>
     /// Splits a <see cref="ReadOnlySpan{T}"/> into two parts at the last occurrence of a separator.
     /// </summary>
     /// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
@@ -386,6 +432,52 @@ public static class MemoryExtensions
         }
 
         return new(memory.Slice(0, index), memory.Slice(index + separator.Length));
+    }
+
+    /// <summary>
+    /// Splits a <see cref="ReadOnlySpan{T}"/> into two parts at the last occurrence of any of the
+    /// specified separators.
+    /// </summary>
+    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
+    /// <param name="span">The <see cref="ReadOnlySpan{T}"/> to split.</param>
+    /// <param name="separators">The set of separators to split the span at.</param>
+    /// <returns>
+    /// If a separator was found, a tuple containing the parts before and after the separator;
+    /// otherwise, <see langword="null"/>.
+    /// </returns>
+    public static NullableReadOnlySpanPair<T, T> SplitOnceLastAny<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> separators)
+        where T : IEquatable<T>
+    {
+        var index = span.LastIndexOfAny(separators);
+        if (index < 0)
+        {
+            return default;
+        }
+
+        return new(span.Slice(0, index), span.Slice(index + 1));
+    }
+
+    /// <summary>
+    /// Splits a <see cref="ReadOnlySpan{T}"/> into two parts at the last occurrence of any of the
+    /// specified separators.
+    /// </summary>
+    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
+    /// <param name="memory">The <see cref="ReadOnlySpan{T}"/> to split.</param>
+    /// <param name="separators">The set of separators to split the span at.</param>
+    /// <returns>
+    /// If a separator was found, a <see cref="NullableReadOnlySpanPair{T, T}"/> containing the
+    /// parts before and after the separator; otherwise, an empty <see cref="NullableReadOnlySpanPair{T, T}"/>.
+    /// </returns>
+    public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnceLastAny<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> separators)
+        where T : IEquatable<T>
+    {
+        var index = memory.Span.LastIndexOfAny(separators);
+        if (index < 0)
+        {
+            return null;
+        }
+
+        return new(memory.Slice(0, index), memory.Slice(index + 1));
     }
 
     /// <summary>

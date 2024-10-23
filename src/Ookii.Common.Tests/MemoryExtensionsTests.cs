@@ -70,6 +70,40 @@ public class MemoryExtensionsTests
     }
 
     [TestMethod]
+    public void TestSplitOnceAnySpan()
+    {
+        var target = "test1,test2;test3".AsSpan().SplitOnceAny([',', ';']);
+        Assert.IsTrue(target.HasValue);
+        Assert.AreEqual("test1", target.Value.Item1.ToString());
+        Assert.AreEqual("test2;test3", target.Value.Item2.ToString());
+
+        target = "test1;test2,test3".AsSpan().SplitOnceAny([',', ';']);
+        Assert.IsTrue(target.HasValue);
+        Assert.AreEqual("test1", target.Value.Item1.ToString());
+        Assert.AreEqual("test2,test3", target.Value.Item2.ToString());
+
+        target = "test1test2test3".AsSpan().SplitOnceAny([',', ';']);
+        Assert.IsFalse(target.HasValue);
+    }
+
+    [TestMethod]
+    public void TestSplitOnceAnyMemory()
+    {
+        var target = "test1,test2;test3".AsMemory().SplitOnceAny([',', ';']);
+        Assert.IsNotNull(target);
+        Assert.AreEqual("test1", target.Value.Item1.ToString());
+        Assert.AreEqual("test2;test3", target.Value.Item2.ToString());
+
+        target = "test1;test2,test3".AsMemory().SplitOnceAny([',', ';']);
+        Assert.IsNotNull(target);
+        Assert.AreEqual("test1", target.Value.Item1.ToString());
+        Assert.AreEqual("test2,test3", target.Value.Item2.ToString());
+
+        target = "test1test2test3".AsMemory().SplitOnceAny([',', ';']);
+        Assert.IsNull(target);
+    }
+
+    [TestMethod]
     public void TestSplitOnceLastSpan()
     {
         var target = "test1,test2,test3".AsSpan().SplitOnceLast(',');
@@ -131,6 +165,40 @@ public class MemoryExtensionsTests
         Assert.IsTrue(target.HasValue);
         Assert.AreEqual("test1Atest2", target.Value.Item1.ToString());
         Assert.AreEqual("test3", target.Value.Item2.ToString());
+    }
+
+    [TestMethod]
+    public void TestSplitOnceLastAnySpan()
+    {
+        var target = "test1,test2;test3".AsSpan().SplitOnceLastAny([',', ';']);
+        Assert.IsTrue(target.HasValue);
+        Assert.AreEqual("test1,test2", target.Value.Item1.ToString());
+        Assert.AreEqual("test3", target.Value.Item2.ToString());
+
+        target = "test1;test2,test3".AsSpan().SplitOnceLastAny([',', ';']);
+        Assert.IsTrue(target.HasValue);
+        Assert.AreEqual("test1;test2", target.Value.Item1.ToString());
+        Assert.AreEqual("test3", target.Value.Item2.ToString());
+
+        target = "test1test2test3".AsSpan().SplitOnceLastAny([',', ';']);
+        Assert.IsFalse(target.HasValue);
+    }
+
+    [TestMethod]
+    public void TestSplitOnceLastAnyMemory()
+    {
+        var target = "test1,test2;test3".AsMemory().SplitOnceLastAny([',', ';']);
+        Assert.IsNotNull(target);
+        Assert.AreEqual("test1,test2", target.Value.Item1.ToString());
+        Assert.AreEqual("test3", target.Value.Item2.ToString());
+
+        target = "test1;test2,test3".AsMemory().SplitOnceLastAny([',', ';']);
+        Assert.IsNotNull(target);
+        Assert.AreEqual("test1;test2", target.Value.Item1.ToString());
+        Assert.AreEqual("test3", target.Value.Item2.ToString());
+
+        target = "test1test2test3".AsMemory().SplitOnceLastAny([',', ';']);
+        Assert.IsNull(target);
     }
 
     [TestMethod]
