@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 
 namespace Ookii.Common;
 
@@ -23,6 +24,7 @@ public static partial class MemoryExtensions
     /// <paramref name="index"/> or <paramref name="index"/> + <paramref name="skip"/> is less than
     /// 0 or greater than the length of <paramref name="span"/>.
     /// </exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlySpanPair<T, T> SplitAt<T>(this ReadOnlySpan<T> span, int index, int skip = 0)
         => new(span.Slice(0, index), span.Slice(index + skip));
 
@@ -41,6 +43,7 @@ public static partial class MemoryExtensions
     /// <paramref name="index"/> or <paramref name="index"/> + <paramref name="skip"/> is less than
     /// 0 or greater than the length of <paramref name="span"/>.
     /// </exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>) SplitAt<T>(this ReadOnlyMemory<T> span, int index, int skip = 0)
         => new(span.Slice(0, index), span.Slice(index + skip));
 
@@ -54,6 +57,7 @@ public static partial class MemoryExtensions
     /// If the separator was found, a <see cref="NullableReadOnlySpanPair{T, T}"/> containing the
     /// parts before and after the separator; otherwise, an empty <see cref="NullableReadOnlySpanPair{T, T}"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpanPair<T, T> SplitOnce<T>(this ReadOnlySpan<T> span, T separator)
         where T : IEquatable<T>
     {
@@ -76,6 +80,7 @@ public static partial class MemoryExtensions
     /// If the separator was found, a tuple containing the parts before and after the separator;
     /// otherwise, <see langword="null"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnce<T>(this ReadOnlyMemory<T> memory, T separator)
         where T : IEquatable<T>
     {
@@ -89,6 +94,7 @@ public static partial class MemoryExtensions
     }
 
     /// <inheritdoc cref="SplitOnce{T}(ReadOnlySpan{T}, T)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpanPair<T, T> SplitOnce<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> separator)
         where T : IEquatable<T>
     {
@@ -102,6 +108,7 @@ public static partial class MemoryExtensions
     }
 
     /// <inheritdoc cref="SplitOnce{T}(ReadOnlyMemory{T}, T)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnce<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> separator)
         where T : IEquatable<T>
     {
@@ -124,6 +131,7 @@ public static partial class MemoryExtensions
     /// If the separator was found, a <see cref="NullableReadOnlySpanPair{T, T}"/> containing the
     /// parts before and after the separator; otherwise, an empty <see cref="NullableReadOnlySpanPair{T, T}"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpanPair<char, char> SplitOnce(this ReadOnlySpan<char> span, ReadOnlySpan<char> separator,
         StringComparison comparisonType)
     {
@@ -146,6 +154,7 @@ public static partial class MemoryExtensions
     /// If the separator was found, a tuple containing the parts before and after the separator;
     /// otherwise, <see langword="null"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (ReadOnlyMemory<char>, ReadOnlyMemory<char>)? SplitOnce(this ReadOnlyMemory<char> memory,
         ReadOnlySpan<char> separator, StringComparison comparisonType)
     {
@@ -179,6 +188,7 @@ public static partial class MemoryExtensions
     ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
     /// </para>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpanPair<char, char> SplitOnce(this ReadOnlySpan<char> span, ReadOnlySpan<char> separator,
         CultureInfo culture, CompareOptions options = CompareOptions.None)
     {
@@ -217,6 +227,7 @@ public static partial class MemoryExtensions
     ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
     /// </para>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (ReadOnlyMemory<char>, ReadOnlyMemory<char>)? SplitOnce(this ReadOnlyMemory<char> memory,
         ReadOnlySpan<char> separator, CultureInfo culture, CompareOptions options = CompareOptions.None)
     {
@@ -245,6 +256,7 @@ public static partial class MemoryExtensions
     /// If a separator was found, a tuple containing the parts before and after the separator;
     /// otherwise, <see langword="null"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpanPair<T, T> SplitOnceAny<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> separators)
         where T : IEquatable<T>
     {
@@ -268,6 +280,7 @@ public static partial class MemoryExtensions
     /// If a separator was found, a <see cref="NullableReadOnlySpanPair{T, T}"/> containing the
     /// parts before and after the separator; otherwise, an empty <see cref="NullableReadOnlySpanPair{T, T}"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnceAny<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> separators)
         where T : IEquatable<T>
     {
@@ -290,6 +303,7 @@ public static partial class MemoryExtensions
     /// If the separator was found, a <see cref="NullableReadOnlySpanPair{T, T}"/> containing the
     /// parts before and after the separator; otherwise, an empty <see cref="NullableReadOnlySpanPair{T, T}"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpanPair<T, T> SplitOnceLast<T>(this ReadOnlySpan<T> span, T separator)
         where T : IEquatable<T>
     {
@@ -312,6 +326,7 @@ public static partial class MemoryExtensions
     /// If the separator was found, a tuple containing the parts before and after the separator;
     /// otherwise, <see langword="null"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnceLast<T>(this ReadOnlyMemory<T> memory, T separator)
         where T : IEquatable<T>
     {
@@ -325,6 +340,7 @@ public static partial class MemoryExtensions
     }
 
     /// <inheritdoc cref="SplitOnce{T}(ReadOnlySpan{T}, T)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpanPair<T, T> SplitOnceLast<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> separator)
         where T : IEquatable<T>
     {
@@ -338,6 +354,7 @@ public static partial class MemoryExtensions
     }
 
     /// <inheritdoc cref="SplitOnceLast{T}(ReadOnlyMemory{T}, T)"/>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnceLast<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> separator)
         where T : IEquatable<T>
     {
@@ -360,6 +377,7 @@ public static partial class MemoryExtensions
     /// If the separator was found, a <see cref="NullableReadOnlySpanPair{T, T}"/> containing the
     /// parts before and after the separator; otherwise, an empty <see cref="NullableReadOnlySpanPair{T, T}"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpanPair<char, char> SplitOnceLast(this ReadOnlySpan<char> span, ReadOnlySpan<char> separator,
         StringComparison comparisonType)
     {
@@ -382,6 +400,7 @@ public static partial class MemoryExtensions
     /// If the separator was found, a tuple containing the parts before and after the separator;
     /// otherwise, <see langword="null"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (ReadOnlyMemory<char>, ReadOnlyMemory<char>)? SplitOnceLast(this ReadOnlyMemory<char> memory,
         ReadOnlySpan<char> separator, StringComparison comparisonType)
     {
@@ -415,6 +434,7 @@ public static partial class MemoryExtensions
     ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
     /// </para>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpanPair<char, char> SplitOnceLast(this ReadOnlySpan<char> span, ReadOnlySpan<char> separator,
         CultureInfo culture, CompareOptions options = CompareOptions.None)
     {
@@ -453,6 +473,7 @@ public static partial class MemoryExtensions
     ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
     /// </para>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (ReadOnlyMemory<char>, ReadOnlyMemory<char>)? SplitOnceLast(this ReadOnlyMemory<char> memory,
         ReadOnlySpan<char> separator, CultureInfo culture, CompareOptions options = CompareOptions.None)
     {
@@ -481,6 +502,7 @@ public static partial class MemoryExtensions
     /// If a separator was found, a tuple containing the parts before and after the separator;
     /// otherwise, <see langword="null"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpanPair<T, T> SplitOnceLastAny<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> separators)
         where T : IEquatable<T>
     {
@@ -504,6 +526,7 @@ public static partial class MemoryExtensions
     /// If a separator was found, a <see cref="NullableReadOnlySpanPair{T, T}"/> containing the
     /// parts before and after the separator; otherwise, an empty <see cref="NullableReadOnlySpanPair{T, T}"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnceLastAny<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> separators)
         where T : IEquatable<T>
     {
@@ -526,6 +549,7 @@ public static partial class MemoryExtensions
     /// If <paramref name="span"/> starts with <paramref name="prefix"/>, returns the span without
     /// the prefix; otherwise, returns an empty <see cref="NullableReadOnlySpan{T}"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpan<T> StripPrefix<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> prefix)
         where T : IEquatable<T>
     {
@@ -547,6 +571,7 @@ public static partial class MemoryExtensions
     /// If <paramref name="memory"/> starts with <paramref name="prefix"/>, returns the memory
     /// without the prefix; otherwise, returns <see langword="null"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlyMemory<T>? StripPrefix<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> prefix)
         where T : IEquatable<T>
     {
@@ -568,6 +593,7 @@ public static partial class MemoryExtensions
     /// If <paramref name="span"/> starts with <paramref name="prefix"/>, returns the span without
     /// the prefix; otherwise, returns an empty <see cref="NullableReadOnlySpan{T}"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpan<char> StripPrefix(this ReadOnlySpan<char> span, ReadOnlySpan<char> prefix,
         StringComparison comparisonType)
     {
@@ -589,6 +615,7 @@ public static partial class MemoryExtensions
     /// If <paramref name="memory"/> starts with <paramref name="prefix"/>, returns the memory
     /// without the prefix; otherwise, returns <see langword="null"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlyMemory<char>? StripPrefix(this ReadOnlyMemory<char> memory, ReadOnlySpan<char> prefix,
         StringComparison comparisonType)
     {
@@ -620,6 +647,7 @@ public static partial class MemoryExtensions
     ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
     /// </para>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpan<char> StripPrefix(this ReadOnlySpan<char> span, ReadOnlySpan<char> prefix,
         CultureInfo culture, CompareOptions options = CompareOptions.None)
     {
@@ -656,6 +684,7 @@ public static partial class MemoryExtensions
     ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
     /// </para>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlyMemory<char>? StripPrefix(this ReadOnlyMemory<char> memory, ReadOnlySpan<char> prefix,
         CultureInfo culture, CompareOptions options = CompareOptions.None)
     {
@@ -682,6 +711,7 @@ public static partial class MemoryExtensions
     /// If <paramref name="span"/> starts with <paramref name="suffix"/>, returns the span without
     /// the suffix; otherwise, returns an empty <see cref="NullableReadOnlySpan{T}"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpan<T> StripSuffix<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> suffix)
         where T : IEquatable<T>
     {
@@ -703,6 +733,7 @@ public static partial class MemoryExtensions
     /// If <paramref name="memory"/> starts with <paramref name="suffix"/>, returns the memory
     /// without the suffix; otherwise, returns <see langword="null"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlyMemory<T>? StripSuffix<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> suffix)
         where T : IEquatable<T>
     {
@@ -724,6 +755,7 @@ public static partial class MemoryExtensions
     /// If <paramref name="span"/> starts with <paramref name="suffix"/>, returns the span without
     /// the suffix; otherwise, returns an empty <see cref="NullableReadOnlySpan{T}"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpan<char> StripSuffix(this ReadOnlySpan<char> span, ReadOnlySpan<char> suffix,
         StringComparison comparisonType)
     {
@@ -745,6 +777,7 @@ public static partial class MemoryExtensions
     /// If <paramref name="memory"/> starts with <paramref name="suffix"/>, returns the memory
     /// without the suffix; otherwise, returns <see langword="null"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlyMemory<char>? StripSuffix(this ReadOnlyMemory<char> memory, ReadOnlySpan<char> suffix,
         StringComparison comparisonType)
     {
@@ -776,6 +809,7 @@ public static partial class MemoryExtensions
     ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
     /// </para>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpan<char> StripSuffix(this ReadOnlySpan<char> span, ReadOnlySpan<char> suffix,
         CultureInfo culture, CompareOptions options = CompareOptions.None)
     {
@@ -812,6 +846,7 @@ public static partial class MemoryExtensions
     ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
     /// </para>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlyMemory<char>? StripSuffix(this ReadOnlyMemory<char> memory, ReadOnlySpan<char> suffix,
         CultureInfo culture, CompareOptions options = CompareOptions.None)
     {
@@ -832,6 +867,7 @@ public static partial class MemoryExtensions
 #if !NET5_0_OR_GREATER
 
     // LastIndexOf with StringComparison is not available in .NET Standard 2.x
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static int LastIndexOf(this ReadOnlySpan<char> span, ReadOnlySpan<char> value, StringComparison comparisonType)
     {
         int lastIndex = -1;
