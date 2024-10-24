@@ -100,7 +100,8 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// <exception cref="InvalidOperationException">
     /// <see cref="HasValue"/> is <see langword="false"/>.
     /// </exception>
-    public ReadOnlySpanPair<TFirst, TSecond> Value => HasValue ? _value : throw new InvalidOperationException();
+    public ReadOnlySpanPair<TFirst, TSecond> Value 
+        => HasValue ? _value : throw new InvalidOperationException(Properties.Resources.EmptyNullableReadOnlySpanPair);
 
     /// <summary>
     /// Gets a value that indicates whether this instance contains a value.

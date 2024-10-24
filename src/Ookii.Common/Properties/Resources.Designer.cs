@@ -61,6 +61,33 @@ namespace Ookii.Common.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The NullableReadOnlySpan&lt;T&gt; has no value..
+        /// </summary>
+        internal static string EmptyNullableReadOnlySpan {
+            get {
+                return ResourceManager.GetString("EmptyNullableReadOnlySpan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The NullableReadOnlySpanPair&lt;T&gt; has no value..
+        /// </summary>
+        internal static string EmptyNullableReadOnlySpanPair {
+            get {
+                return ResourceManager.GetString("EmptyNullableReadOnlySpanPair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The NullableSpan&lt;T&gt; has no value..
+        /// </summary>
+        internal static string EmptyNullableSpan {
+            get {
+                return ResourceManager.GetString("EmptyNullableSpan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An invalid StringSplitOptions value was provided..
         /// </summary>
         internal static string InvalidSplitFlags {

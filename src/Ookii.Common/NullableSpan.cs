@@ -63,7 +63,7 @@ public readonly ref struct NullableSpan<T>
     /// <exception cref="InvalidOperationException">
     /// <see cref="HasValue"/> is <see langword="false"/>.
     /// </exception>
-    public Span<T> Value => HasValue ? _value : throw new InvalidOperationException();
+    public Span<T> Value => HasValue ? _value : throw new InvalidOperationException(Properties.Resources.EmptyNullableSpan);
 
     /// <summary>
     /// Gets a value that indicates whether this instance contains a value.

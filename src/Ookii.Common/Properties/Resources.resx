@@ -120,4 +120,13 @@
   <data name="InvalidSplitFlags" xml:space="preserve">
     <value>An invalid StringSplitOptions value was provided.</value>
   </data>
+  <data name="EmptyNullableReadOnlySpan" xml:space="preserve">
+    <value>The NullableReadOnlySpan&lt;T&gt; has no value.</value>
+  </data>
+  <data name="EmptyNullableReadOnlySpanPair" xml:space="preserve">
+    <value>The NullableReadOnlySpanPair&lt;T&gt; has no value.</value>
+  </data>
+  <data name="EmptyNullableSpan" xml:space="preserve">
+    <value>The NullableSpan&lt;T&gt; has no value.</value>
+  </data>
 </root>
