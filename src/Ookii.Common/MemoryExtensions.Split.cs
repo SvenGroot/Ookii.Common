@@ -130,6 +130,19 @@ public static partial class MemoryExtensions
     ///   that expect an <see cref="IEnumerable{T}"/>.
     /// </para>
     /// </remarks>
-    public static SplitEnumerable Split(this ReadOnlySpan<char> value, ReadOnlySpan<char> separator, StringSplitOptions options = StringSplitOptions.None) 
-        => new(value, separator, options);
+    public static SplitEnumerable Split(this ReadOnlySpan<char> value, ReadOnlySpan<char> separator, StringSplitOptions options = StringSplitOptions.None)
+    {
+#if NET6_0_OR_GREATER
+        const StringSplitOptions validOptions = StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries;
+#else
+        const StringSplitOptions validOptions = StringSplitOptions.RemoveEmptyEntries;
+#endif
+
+        if ((options & ~validOptions) != 0)
+        {
+            throw new ArgumentException(Properties.Resources.InvalidSplitFlags, nameof(options));
+        }
+
+        return new(value, separator, options);
+    }
 }
