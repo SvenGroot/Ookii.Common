@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Ookii.Common;
 
@@ -40,6 +42,7 @@ public readonly ref struct ReadOnlySpanPair<TFirst, TSecond>
     /// </summary>
     /// <param name="first">The first value.</param>
     /// <param name="second">The second value.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpanPair(ReadOnlySpan<TFirst> first, ReadOnlySpan<TSecond> second)
     {
         Item1 = first;
@@ -52,7 +55,11 @@ public readonly ref struct ReadOnlySpanPair<TFirst, TSecond>
     /// <value>
     /// The first <see cref="ReadOnlySpan{T}"/> in the pair.
     /// </value>
-    public readonly ReadOnlySpan<TFirst> Item1 { get; }
+    public readonly ReadOnlySpan<TFirst> Item1
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get;
+    }
 
     /// <summary>
     /// Gets the second value of the pair.
@@ -60,13 +67,18 @@ public readonly ref struct ReadOnlySpanPair<TFirst, TSecond>
     /// <value>
     /// The second <see cref="ReadOnlySpan{T}"/> in the pair.
     /// </value>
-    public readonly ReadOnlySpan<TSecond> Item2 { get; }
+    public readonly ReadOnlySpan<TSecond> Item2
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get;
+    }
 
     /// <summary>
     /// Deconstructs the pair into two <see cref="ReadOnlySpan{T}"/> instances.
     /// </summary>
     /// <param name="first">Receives the first value.</param>
     /// <param name="second">Receives the second value.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Deconstruct(out ReadOnlySpan<TFirst> first, out ReadOnlySpan<TSecond> second)
     {
         first = Item1;
@@ -94,6 +106,7 @@ public readonly ref struct ReadOnlySpanPair<TFirst, TSecond>
     /// Always thrown by this method.
     /// </exception>
     [Obsolete("Equals() should not be used on ReadOnlySpanPair<TFirst, TSecond>.", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public override bool Equals(object? obj) => throw new NotSupportedException();
 
     /// <summary>
@@ -107,6 +120,7 @@ public readonly ref struct ReadOnlySpanPair<TFirst, TSecond>
     /// Always thrown by this method.
     /// </exception>
     [Obsolete("GetHashCode() should not be used on ReadOnlySpanPair<TFirst, TSecond>.", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public override int GetHashCode() => throw new NotSupportedException();
 
 #pragma warning restore CS0809 // Obsolete member overrides non-obsolete member

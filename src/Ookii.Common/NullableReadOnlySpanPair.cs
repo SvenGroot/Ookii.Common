@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Ookii.Common;
 
@@ -19,6 +21,7 @@ public static class NullableReadOnlySpanPair
     /// <param name="first">The first value.</param>
     /// <param name="second">The second value.</param>
     /// <returns>A <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/> containing the value.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpanPair<TFirst, TSecond> Create<TFirst, TSecond>(ReadOnlySpan<TFirst> first, ReadOnlySpan<TSecond> second)
         => new(first, second);
 }
@@ -56,7 +59,7 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// <param name="value">The value to map.</param>
     /// <returns>The mapped value.</returns>
     public delegate TResult MapStructFunc<TResult>(ReadOnlySpanPair<TFirst, TSecond> value)
-        where TResult: struct;
+        where TResult : struct;
 
     /// <summary>
     /// A function that maps a <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> to a <typeparamref name="TResult"/>.
@@ -74,6 +77,7 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// structure.
     /// </summary>
     /// <param name="value">The value that the structure will contain.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public NullableReadOnlySpanPair(ReadOnlySpanPair<TFirst, TSecond> value)
     {
         _value = value;
@@ -86,6 +90,7 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// </summary>
     /// <param name="first">The first value of the pair.</param>
     /// <param name="second">The second value of the pair.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public NullableReadOnlySpanPair(ReadOnlySpan<TFirst> first, ReadOnlySpan<TSecond> second)
         : this(new ReadOnlySpanPair<TFirst, TSecond>(first, second))
     {
@@ -100,8 +105,11 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// <exception cref="InvalidOperationException">
     /// <see cref="HasValue"/> is <see langword="false"/>.
     /// </exception>
-    public ReadOnlySpanPair<TFirst, TSecond> Value 
-        => HasValue ? _value : throw new InvalidOperationException(Properties.Resources.EmptyNullableReadOnlySpanPair);
+    public ReadOnlySpanPair<TFirst, TSecond> Value
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => HasValue ? _value : throw new InvalidOperationException(Properties.Resources.EmptyNullableReadOnlySpanPair);
+    }
 
     /// <summary>
     /// Gets a value that indicates whether this instance contains a value.
@@ -110,7 +118,11 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// <see langword="true"/> if this instance contains a value; otherwise,
     /// <see langword="false"/>.
     /// </value>
-    public bool HasValue { get; }
+    public bool HasValue
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get;
+    }
 
     /// <summary>
     /// Gets the contained value.
@@ -123,6 +135,7 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// <returns>
     /// The value of the <see cref="HasValue"/> property.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetValue(out ReadOnlySpanPair<TFirst, TSecond> value)
     {
         value = _value;
@@ -145,6 +158,7 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// <returns>
     /// The value of the <see cref="HasValue"/> property.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetValue(out ReadOnlySpan<TFirst> first, out ReadOnlySpan<TSecond> second)
     {
         first = _value.Item1;
@@ -164,6 +178,7 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// If <see cref="HasValue"/> is <see langword="true"/>, receives the second value, otherwise
     /// an empty <see cref="NullableReadOnlySpan{T}"/>.
     /// </param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Unzip(out NullableReadOnlySpan<TFirst> first, out NullableReadOnlySpan<TSecond> second)
     {
         if (HasValue)
@@ -208,6 +223,7 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     ///   instead.
     /// </para>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpanPair<TFirst, TSecond> GetValueOrDefault(ReadOnlySpanPair<TFirst, TSecond> defaultValue = default)
         => HasValue ? _value : defaultValue;
 
@@ -227,6 +243,7 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     ///   property is <see langword="false"/>.
     /// </para>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpanPair<TFirst, TSecond> GetValueOrElse(ReadOnlySpanPairFunc<TFirst, TSecond> defaultValueFunc)
         => HasValue ? _value : defaultValueFunc();
 
@@ -300,6 +317,7 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// Always thrown by this method.
     /// </exception>
     [Obsolete("Equals() should not be used on NullableReadOnlySpanPair<TFirst, TSecond>.", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public override bool Equals(object? obj) => throw new NotSupportedException();
 
     /// <summary>
@@ -313,6 +331,7 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     /// Always thrown by this method.
     /// </exception>
     [Obsolete("GetHashCode() should not be used on NullableReadOnlySpanPair<TFirst, TSecond>.", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public override int GetHashCode() => throw new NotSupportedException();
 
 #pragma warning restore CS0809 // Obsolete member overrides non-obsolete member

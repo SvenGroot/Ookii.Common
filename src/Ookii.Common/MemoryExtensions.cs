@@ -9,6 +9,42 @@ namespace Ookii.Common;
 public static partial class MemoryExtensions
 {
     /// <summary>
+    /// Splits a <see cref="ReadOnlySpan{T}"/> into two parts at the specified index, optionally
+    /// skipping the specified number of elements.
+    /// </summary>
+    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
+    /// <param name="span">The span to split.</param>
+    /// <param name="index">The index to split at.</param>
+    /// <param name="skip">The number of elements to skip at the split point.</param>
+    /// <returns>
+    /// A pair containing the parts before and after the split point.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <paramref name="index"/> or <paramref name="index"/> + <paramref name="skip"/> is less than
+    /// 0 or greater than the length of <paramref name="span"/>.
+    /// </exception>
+    public static ReadOnlySpanPair<T, T> SplitAt<T>(this ReadOnlySpan<T> span, int index, int skip = 0)
+        => new(span.Slice(0, index), span.Slice(index + skip));
+
+    /// <summary>
+    /// Splits a <see cref="ReadOnlyMemory{T}"/> into two parts at the specified index, optionally
+    /// skipping the specified number of elements.
+    /// </summary>
+    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlyMemory{T}"/>.</typeparam>
+    /// <param name="span">The span to split.</param>
+    /// <param name="index">The index to split at.</param>
+    /// <param name="skip">The number of elements to skip at the split point.</param>
+    /// <returns>
+    /// A tuple containing the parts before and after the split point.
+    /// </returns>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// <paramref name="index"/> or <paramref name="index"/> + <paramref name="skip"/> is less than
+    /// 0 or greater than the length of <paramref name="span"/>.
+    /// </exception>
+    public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>) SplitAt<T>(this ReadOnlyMemory<T> span, int index, int skip = 0)
+        => new(span.Slice(0, index), span.Slice(index + skip));
+
+    /// <summary>
     /// Splits a <see cref="ReadOnlySpan{T}"/> into two parts at the first occurrence of a separator.
     /// </summary>
     /// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
@@ -27,7 +63,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(span.Slice(0, index), span.Slice(index + 1));
+        return span.SplitAt(index, 1);
     }
 
     /// <summary>
@@ -49,7 +85,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return (memory.Slice(0, index), memory.Slice(index + 1));
+        return memory.SplitAt(index, 1);
     }
 
     /// <inheritdoc cref="SplitOnce{T}(ReadOnlySpan{T}, T)"/>
@@ -62,7 +98,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(span.Slice(0, index), span.Slice(index + separator.Length));
+        return span.SplitAt(index, separator.Length);
     }
 
     /// <inheritdoc cref="SplitOnce{T}(ReadOnlyMemory{T}, T)"/>
@@ -75,7 +111,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(memory.Slice(0, index), memory.Slice(index + separator.Length));
+        return memory.SplitAt(index, separator.Length);
     }
 
     /// <summary>
@@ -97,7 +133,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(span.Slice(0, index), span.Slice(index + separator.Length));
+        return span.SplitAt(index, separator.Length);
     }
 
     /// <summary>
@@ -119,7 +155,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(memory.Slice(0, index), memory.Slice(index + separator.Length));
+        return memory.SplitAt(index, separator.Length);
     }
 
     /// <summary>
@@ -157,7 +193,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(span.Slice(0, index), span.Slice(index + separator.Length));
+        return span.SplitAt(index, separator.Length);
     }
 
     /// <summary>
@@ -195,7 +231,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(memory.Slice(0, index), memory.Slice(index + separator.Length));
+        return memory.SplitAt(index, separator.Length);
     }
 
     /// <summary>
@@ -218,7 +254,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(span.Slice(0, index), span.Slice(index + 1));
+        return span.SplitAt(index, 1);
     }
 
     /// <summary>
@@ -241,7 +277,7 @@ public static partial class MemoryExtensions
             return null;
         }
 
-        return new(memory.Slice(0, index), memory.Slice(index + 1));
+        return memory.SplitAt(index, 1);
     }
 
     /// <summary>
@@ -263,7 +299,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(span.Slice(0, index), span.Slice(index + 1));
+        return span.SplitAt(index, 1);
     }
 
     /// <summary>
@@ -285,7 +321,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return (memory.Slice(0, index), memory.Slice(index + 1));
+        return memory.SplitAt(index, 1);
     }
 
     /// <inheritdoc cref="SplitOnce{T}(ReadOnlySpan{T}, T)"/>
@@ -298,7 +334,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(span.Slice(0, index), span.Slice(index + separator.Length));
+        return span.SplitAt(index, separator.Length);
     }
 
     /// <inheritdoc cref="SplitOnceLast{T}(ReadOnlyMemory{T}, T)"/>
@@ -311,7 +347,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(memory.Slice(0, index), memory.Slice(index + separator.Length));
+        return memory.SplitAt(index, separator.Length);
     }
 
     /// <summary>
@@ -333,7 +369,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(span.Slice(0, index), span.Slice(index + separator.Length));
+        return span.SplitAt(index, separator.Length);
     }
 
     /// <summary>
@@ -355,7 +391,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(memory.Slice(0, index), memory.Slice(index + separator.Length));
+        return memory.SplitAt(index, separator.Length);
     }
 
     /// <summary>
@@ -393,7 +429,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(span.Slice(0, index), span.Slice(index + separator.Length));
+        return span.SplitAt(index, separator.Length);
     }
 
     /// <summary>
@@ -431,7 +467,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(memory.Slice(0, index), memory.Slice(index + separator.Length));
+        return memory.SplitAt(index, separator.Length);
     }
 
     /// <summary>
@@ -454,7 +490,7 @@ public static partial class MemoryExtensions
             return default;
         }
 
-        return new(span.Slice(0, index), span.Slice(index + 1));
+        return span.SplitAt(index, 1);
     }
 
     /// <summary>
@@ -477,7 +513,7 @@ public static partial class MemoryExtensions
             return null;
         }
 
-        return new(memory.Slice(0, index), memory.Slice(index + 1));
+        return memory.SplitAt(index, 1);
     }
 
     /// <summary>

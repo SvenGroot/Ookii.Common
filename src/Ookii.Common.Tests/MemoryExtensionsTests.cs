@@ -292,6 +292,9 @@ public class MemoryExtensionsTests
     [TestMethod]
     public void TestSplitSpan()
     {
+        SplitHelper("test1", ",", StringSplitOptions.None, ["test1"]);
+        SplitHelper("test1,test2", ",", StringSplitOptions.None, ["test1", "test2"]);
+        SplitHelper("test1,test2,test3", ",", StringSplitOptions.None, ["test1", "test2", "test3"]);
         SplitHelper(",test1,,test2,test3,", ",", StringSplitOptions.None, ["", "test1", "", "test2", "test3", ""]);
         SplitHelper(",test1,,test2,test3,", ",", StringSplitOptions.RemoveEmptyEntries, ["test1", "test2", "test3"]);
         SplitHelper("", ",", StringSplitOptions.None, [""]);

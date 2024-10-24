@@ -65,8 +65,8 @@ public static partial class MemoryExtensions
                 }
                 else
                 {
-                    _current = remaining.Slice(0, index);
-                    _remaining = remaining.Slice(index + _separator.Length);
+                    (_current, var newRemaining) = remaining.SplitAt(index, _separator.Length);
+                    _remaining = newRemaining;
                 }
 
 #if NET6_0_OR_GREATER

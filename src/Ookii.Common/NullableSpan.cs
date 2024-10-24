@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Ookii.Common;
 
@@ -48,6 +50,7 @@ public readonly ref struct NullableSpan<T>
     /// Initializes a new instance of the <see cref="NullableSpan{T}"/> structure.
     /// </summary>
     /// <param name="value">The value that the structure will contain.</param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public NullableSpan(Span<T> value)
     {
         _value = value;
@@ -63,7 +66,11 @@ public readonly ref struct NullableSpan<T>
     /// <exception cref="InvalidOperationException">
     /// <see cref="HasValue"/> is <see langword="false"/>.
     /// </exception>
-    public Span<T> Value => HasValue ? _value : throw new InvalidOperationException(Properties.Resources.EmptyNullableSpan);
+    public Span<T> Value
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => HasValue ? _value : throw new InvalidOperationException(Properties.Resources.EmptyNullableSpan);
+    }
 
     /// <summary>
     /// Gets a value that indicates whether this instance contains a value.
@@ -72,7 +79,11 @@ public readonly ref struct NullableSpan<T>
     /// <see langword="true"/> if this instance contains a value; otherwise,
     /// <see langword="false"/>.
     /// </value>
-    public bool HasValue { get; }
+    public bool HasValue
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get; 
+    }
 
     /// <summary>
     /// Gets the contained value.
@@ -85,6 +96,7 @@ public readonly ref struct NullableSpan<T>
     /// <returns>
     /// The value of the <see cref="HasValue"/> property.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetValue(out Span<T> value)
     {
         value = _value;
@@ -120,6 +132,7 @@ public readonly ref struct NullableSpan<T>
     ///   using the <see cref="GetValueOrDefault(Span{T})"/> overload instead.
     /// </para>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Span<T> GetValueOrDefault(Span<T> defaultValue = default) => HasValue ? _value : defaultValue;
 
     /// <summary>
@@ -138,6 +151,7 @@ public readonly ref struct NullableSpan<T>
     ///   property is <see langword="false"/>.
     /// </para>
     /// </remarks>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Span<T> GetValueOrElse(SpanFunc<T> defaultValueFunc) => HasValue ? _value : defaultValueFunc();
 
     /// <summary>
@@ -226,6 +240,7 @@ public readonly ref struct NullableSpan<T>
     /// Always thrown by this method.
     /// </exception>
     [Obsolete("Equals() should not be used on NullableSpan<T>.", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public override bool Equals(object? obj) => throw new NotSupportedException();
 
     /// <summary>
@@ -239,6 +254,7 @@ public readonly ref struct NullableSpan<T>
     /// Always thrown by this method.
     /// </exception>
     [Obsolete("GetHashCode() should not be used on NullableSpan<T>.", true)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public override int GetHashCode() => throw new NotSupportedException();
 
 #pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
@@ -248,6 +264,7 @@ public readonly ref struct NullableSpan<T>
     /// </summary>
     /// <param name="value">The value that the <see cref="NullableSpan{T}"/> will contain.</param>
     /// <returns>A <see cref="NullableSpan{T}"/> that contains the specified value.</returns> 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator NullableSpan<T>(Span<T> value) => new(value);
 
     /// <summary>
@@ -258,6 +275,7 @@ public readonly ref struct NullableSpan<T>
     /// <exception cref="InvalidOperationException">
     /// <see cref="HasValue"/> is <see langword="false"/>.
     /// </exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static explicit operator Span<T>(NullableSpan<T> value) => value.Value;
 
     /// <summary>
