@@ -6,7 +6,7 @@ namespace Ookii.Common;
 /// <summary>
 /// Provides extensions for the <see cref="ReadOnlySpan{T}"/> structure.
 /// </summary>
-public static class MemoryExtensions
+public static partial class MemoryExtensions
 {
     /// <summary>
     /// Splits a <see cref="ReadOnlySpan{T}"/> into two parts at the first occurrence of a separator.

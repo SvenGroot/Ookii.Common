@@ -288,4 +288,34 @@ public class MemoryExtensionsTests
         Assert.IsTrue(target.HasValue);
         Assert.AreEqual("foobar", target.Value.ToString());
     }
+
+    [TestMethod]
+    public void TestSplitSpan()
+    {
+        SplitHelper(",test1,,test2,test3,", ",", StringSplitOptions.None, ["", "test1", "", "test2", "test3", ""]);
+        SplitHelper(",test1,,test2,test3,", ",", StringSplitOptions.RemoveEmptyEntries, ["test1", "test2", "test3"]);
+        SplitHelper("", ",", StringSplitOptions.None, [""]);
+        SplitHelper("", ",", StringSplitOptions.RemoveEmptyEntries, []);
+
+#if NET6_0_OR_GREATER
+        SplitHelper(", test1 ,  ,test2,test3,", ",", StringSplitOptions.TrimEntries, ["", "test1", "", "test2", "test3", ""]);
+
+        SplitHelper(", test1 ,  ,test2,test3,", ",", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries,
+            ["test1", "test2", "test3"]);
+
+        SplitHelper(" ", ",", StringSplitOptions.TrimEntries, [""]);
+        SplitHelper(" ", ",", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries, []);
+#endif
+    }
+
+    private static void SplitHelper(string value, string separator, StringSplitOptions options, string[] expected)
+    {
+        var actual = new List<string>();
+        foreach (var item in value.AsSpan().Split(separator.AsSpan(), options))
+        {
+            actual.Add(item.ToString());
+        }
+
+        CollectionAssert.AreEqual(expected, actual);
+    }
 }
