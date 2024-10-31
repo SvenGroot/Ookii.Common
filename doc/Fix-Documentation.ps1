@@ -6,7 +6,9 @@ $lines = Get-Content $file -Raw
 $lines -replace '<br /><span class="tag is-danger">Obsolete.</span>', '' | Set-Content $file
 
 # Fix the type topic pages.
-$names = "T_Ookii_Common_NullableReadOnlySpan_1",
+$names = "T_Ookii_Common_MemoryExtensions_SplitEnumerable",
+    "T_Ookii_Common_MemoryExtensions_SplitEnumerator",
+    "T_Ookii_Common_NullableReadOnlySpan_1",
     "T_Ookii_Common_NullableReadOnlySpanPair_2",
     "T_Ookii_Common_NullableSpan_1",
     "T_Ookii_Common_ReadOnlySpanPair_2"
@@ -15,5 +17,5 @@ foreach ($name in $names) {
     $file = Join-Path $helpPath "$name.htm"
     $lines = Get-Content $file -Raw
     $lines = $lines -replace '<div id="TopicNotices"><span class="tags"><span class="tag is-danger is-medium">Note: This API is now obsolete.</span></span></div>', ''
-    $lines -replace '<span class="keyword">struct</span>', '<span class="keyword">ref</span> <span class="keyword">struct</span>' | Set-Content $file
+    $lines -replace '<span class="keyword">readonly</span> <span class="keyword">struct</span>', '<span class="keyword">readonly</span> <span class="keyword">ref</span> <span class="keyword">struct</span>' | Set-Content $file
 }
