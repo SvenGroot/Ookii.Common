@@ -33,7 +33,7 @@ public readonly ref struct NullableReadOnlySpan<T>
     /// <param name="value">The value to map.</param>
     /// <returns>The mapped value.</returns>
     public delegate TResult MapStructFunc<TResult>(ReadOnlySpan<T> value)
-        where TResult: struct;
+        where TResult : struct;
 
     /// <summary>
     /// A function that maps a <see cref="ReadOnlySpan{T}"/> to a <typeparamref name="TResult"/>.

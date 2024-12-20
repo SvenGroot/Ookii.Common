@@ -21,8 +21,8 @@ public static class ReadOnlySpanPair
     /// <param name="first">The first value.</param>
     /// <param name="second">The second value.</param>
     /// <returns>A <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> containing the value.</returns>
-    public static ReadOnlySpanPair<TFirst, TSecond> Create<TFirst, TSecond>(ReadOnlySpan<TFirst> first, ReadOnlySpan<TSecond> second) 
-        => new (first, second);
+    public static ReadOnlySpanPair<TFirst, TSecond> Create<TFirst, TSecond>(ReadOnlySpan<TFirst> first, ReadOnlySpan<TSecond> second)
+        => new(first, second);
 }
 
 /// <summary>

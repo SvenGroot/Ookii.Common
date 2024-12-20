@@ -33,7 +33,7 @@ public readonly ref struct NullableSpan<T>
     /// <param name="value">The value to map.</param>
     /// <returns>The mapped value.</returns>
     public delegate TResult MapStructFunc<TResult>(Span<T> value)
-        where TResult: struct;
+        where TResult : struct;
 
     /// <summary>
     /// A function that maps a <see cref="Span{T}"/> to a <typeparamref name="TResult"/>.
@@ -82,7 +82,7 @@ public readonly ref struct NullableSpan<T>
     public bool HasValue
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get; 
+        get;
     }
 
     /// <summary>
