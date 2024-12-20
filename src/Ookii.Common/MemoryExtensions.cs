@@ -5,8 +5,10 @@ using System.Runtime.CompilerServices;
 namespace Ookii.Common;
 
 /// <summary>
-/// Provides extensions for the <see cref="ReadOnlySpan{T}"/> structure.
+/// Provides extensions for the <see cref="ReadOnlyMemory{T}"/> and <see cref="ReadOnlySpan{T}"/>
+/// structures.
 /// </summary>
+/// <threadsafety static="true" instance="true"/>
 public static partial class MemoryExtensions
 {
     /// <summary>
@@ -33,7 +35,7 @@ public static partial class MemoryExtensions
     /// skipping the specified number of elements.
     /// </summary>
     /// <typeparam name="T">The type of the items in the <see cref="ReadOnlyMemory{T}"/>.</typeparam>
-    /// <param name="span">The span to split.</param>
+    /// <param name="span">The memory region to split.</param>
     /// <param name="index">The index to split at.</param>
     /// <param name="skip">The number of elements to skip at the split point.</param>
     /// <returns>
