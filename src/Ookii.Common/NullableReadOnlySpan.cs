@@ -7,7 +7,14 @@ namespace Ookii.Common;
 /// <summary>
 /// Represents a <see cref="ReadOnlySpan{T}"/> that may or may not have a value.
 /// </summary>
+/// <remarks>
+/// <para>
+///   Because <see cref="ReadOnlySpan{T}"/> is a ref struct, it cannot be used with
+///   <see cref="Nullable{T}"/>. This structure offers an alternative with similar functionality.
+/// </para>
+/// </remarks>
 /// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
+/// <threadsafety static="true" instance="false"/>
 public readonly ref struct NullableReadOnlySpan<T>
 {
     /// <summary>
@@ -129,14 +136,15 @@ public readonly ref struct NullableReadOnlySpan<T>
     /// </para>
     /// <para>
     ///   If the value used for <paramref name="defaultValue"/> is expensive to construct, consider
-    ///   using the <see cref="GetValueOrElse(ReadOnlySpanFunc{T})"/> overload instead.
+    ///   using the <see cref="GetValueOrElse(ReadOnlySpanFunc{T})"/> method instead.
     /// </para>
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ReadOnlySpan<T> GetValueOrDefault(ReadOnlySpan<T> defaultValue = default) => HasValue ? _value : defaultValue;
 
     /// <summary>
-    /// Returns the contained value, or the value returned by the specified function if there is no value.
+    /// Returns the contained value, or the value returned by the specified function if there is no
+    /// value.
     /// </summary>
     /// <param name="defaultValueFunc">
     /// The function that produces a value if this <see cref="NullableReadOnlySpan{T}"/> is empty.

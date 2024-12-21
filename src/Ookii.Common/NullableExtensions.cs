@@ -10,6 +10,7 @@ namespace Ookii.Common;
 /// Provides extension methods for the <see cref="Nullable{T}"/> structure, and for nullable
 /// reference types.
 /// </summary>
+/// <threadsafety static="true" instance="false"/>
 public static class NullableExtensions
 {
     /// <summary>
@@ -51,7 +52,7 @@ public static class NullableExtensions
         where TResult : struct;
 
     /// <summary>
-    /// Applies a mapping function a value that may be <see langword="null"/>.
+    /// Applies a mapping function to a value that may be <see langword="null"/>.
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <typeparam name="TResult">The type of the result.</typeparam>
@@ -91,7 +92,7 @@ public static class NullableExtensions
         => self is T value ? map(value) : null;
 
     /// <summary>
-    /// Applies a mapping function a value that may be <see langword="null"/>.
+    /// Applies a mapping function to a value that may be <see langword="null"/>.
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <typeparam name="TResult">
@@ -119,7 +120,7 @@ public static class NullableExtensions
         => self is T value ? new NullableReadOnlySpan<TResult>(map(value)) : default;
 
     /// <summary>
-    /// Applies a mapping function a value that may be <see langword="null"/>.
+    /// Applies a mapping function to a value that may be <see langword="null"/>.
     /// </summary>
     /// <typeparam name="T">The type of the value.</typeparam>
     /// <typeparam name="TResult">

@@ -7,6 +7,7 @@ namespace Ookii.Common;
 /// <summary>
 /// Provides helper methods for <see cref="NullableReadOnlySpanPair{TFirst, TSecond}"/>.
 /// </summary>
+/// <threadsafety static="true" instance="false"/>
 public static class NullableReadOnlySpanPair
 {
     /// <summary>
@@ -35,6 +36,7 @@ public static class NullableReadOnlySpanPair
 /// <typeparam name="TSecond">
 /// The type of the items in the second value of the <see cref="ReadOnlySpanPair{TFirst, TSecond}"/>.
 /// </typeparam>
+/// <threadsafety static="true" instance="false"/>
 public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
 {
     /// <summary>

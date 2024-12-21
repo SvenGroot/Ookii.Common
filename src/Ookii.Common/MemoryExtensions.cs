@@ -8,7 +8,7 @@ namespace Ookii.Common;
 /// Provides extensions for the <see cref="ReadOnlyMemory{T}"/> and <see cref="ReadOnlySpan{T}"/>
 /// structures.
 /// </summary>
-/// <threadsafety static="true" instance="true"/>
+/// <threadsafety static="true" instance="false"/>
 public static partial class MemoryExtensions
 {
     /// <summary>
@@ -77,7 +77,7 @@ public static partial class MemoryExtensions
     /// </summary>
     /// <typeparam name="T">The type of the items in the <see cref="ReadOnlyMemory{T}"/>.</typeparam>
     /// <param name="memory">The <see cref="ReadOnlyMemory{T}"/> to split.</param>
-    /// <param name="separator">The separator to split the span at.</param>
+    /// <param name="separator">The separator to split the memory region at.</param>
     /// <returns>
     /// If the separator was found, a tuple containing the parts before and after the separator;
     /// otherwise, <see langword="null"/>.
@@ -147,9 +147,10 @@ public static partial class MemoryExtensions
     }
 
     /// <summary>
-    /// Splits a span of characters into two parts at the first occurrence of a separator.
+    /// Splits a read-only memory region of characters into two parts at the first occurrence of a
+    /// separator.
     /// </summary>
-    /// <param name="memory">The span of characters to split.</param>
+    /// <param name="memory">The memory region to split.</param>
     /// <param name="separator">A span of characters containing the separator to split on.</param>
     /// <param name="comparisonType">The type of string comparison to use to find the separator.</param>
     /// <returns>
@@ -209,9 +210,10 @@ public static partial class MemoryExtensions
     }
 
     /// <summary>
-    /// Splits a span of characters into two parts at the first occurrence of a separator.
+    /// Splits a read-only memory region of characters into two parts at the first occurrence of a
+    /// separator.
     /// </summary>
-    /// <param name="memory">The span of characters to split.</param>
+    /// <param name="memory">The memory region to split.</param>
     /// <param name="separator">A span of characters containing the separator to split on.</param>
     /// <param name="culture">
     /// The <see cref="CultureInfo"/> to use to perform string comparison when finding the
@@ -226,7 +228,7 @@ public static partial class MemoryExtensions
     /// <para>
     ///   When using the .Net Standard 2.0 or 2.1 version of this library, this method may allocate
     ///   strings to perform the comparison. This is because the <see cref="CompareInfo"/> class
-    ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
+    ///   does not provide string comparison methods for use with <see cref="ReadOnlyMemory{T}"/>.
     /// </para>
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -255,8 +257,8 @@ public static partial class MemoryExtensions
     /// <param name="span">The <see cref="ReadOnlySpan{T}"/> to split.</param>
     /// <param name="separators">The set of separators to split the span at.</param>
     /// <returns>
-    /// If a separator was found, a tuple containing the parts before and after the separator;
-    /// otherwise, <see langword="null"/>.
+    /// If a separator was found, a <see cref="NullableReadOnlySpanPair{T, T}"/> containing the
+    /// parts before and after the separator; otherwise, an empty <see cref="NullableReadOnlySpanPair{T, T}"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpanPair<T, T> SplitOnceAny<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> separators)
@@ -272,15 +274,15 @@ public static partial class MemoryExtensions
     }
 
     /// <summary>
-    /// Splits a <see cref="ReadOnlySpan{T}"/> into two parts at the first occurrence of any of the
+    /// Splits a <see cref="ReadOnlyMemory{T}"/> into two parts at the first occurrence of any of the
     /// specified separators.
     /// </summary>
-    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
-    /// <param name="memory">The <see cref="ReadOnlySpan{T}"/> to split.</param>
-    /// <param name="separators">The set of separators to split the span at.</param>
+    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlyMemory{T}"/>.</typeparam>
+    /// <param name="memory">The <see cref="ReadOnlyMemory{T}"/> to split.</param>
+    /// <param name="separators">The set of separators to split the memory region at.</param>
     /// <returns>
-    /// If a separator was found, a <see cref="NullableReadOnlySpanPair{T, T}"/> containing the
-    /// parts before and after the separator; otherwise, an empty <see cref="NullableReadOnlySpanPair{T, T}"/>.
+    /// If a separator was found, a tuple containing the parts before and after the separator;
+    /// otherwise, <see langword="null"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnceAny<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> separators)
@@ -319,11 +321,11 @@ public static partial class MemoryExtensions
     }
 
     /// <summary>
-    /// Splits a <see cref="ReadOnlyMemory{T}"/> into two parts at the first occurrence of a separator.
+    /// Splits a <see cref="ReadOnlyMemory{T}"/> into two parts at the last occurrence of a separator.
     /// </summary>
     /// <typeparam name="T">The type of the items in the <see cref="ReadOnlyMemory{T}"/>.</typeparam>
     /// <param name="memory">The <see cref="ReadOnlyMemory{T}"/> to split.</param>
-    /// <param name="separator">The separator to split the span at.</param>
+    /// <param name="separator">The separator to split the memory region at.</param>
     /// <returns>
     /// If the separator was found, a tuple containing the parts before and after the separator;
     /// otherwise, <see langword="null"/>.
@@ -393,9 +395,9 @@ public static partial class MemoryExtensions
     }
 
     /// <summary>
-    /// Splits a span of characters into two parts at the first occurrence of a separator.
+    /// Splits a read-only memory region of characters into two parts at the last occurrence of a separator.
     /// </summary>
-    /// <param name="memory">The span of characters to split.</param>
+    /// <param name="memory">The memory region of characters to split.</param>
     /// <param name="separator">A span of characters containing the separator to split on.</param>
     /// <param name="comparisonType">The type of string comparison to use to find the separator.</param>
     /// <returns>
@@ -455,9 +457,9 @@ public static partial class MemoryExtensions
     }
 
     /// <summary>
-    /// Splits a span of characters into two parts at the first occurrence of a separator.
+    /// Splits a read-only memory region of characters into two parts at the first occurrence of a separator.
     /// </summary>
-    /// <param name="memory">The span of characters to split.</param>
+    /// <param name="memory">The memory region of characters to split.</param>
     /// <param name="separator">A span of characters containing the separator to split on.</param>
     /// <param name="culture">
     /// The <see cref="CultureInfo"/> to use to perform string comparison when finding the
@@ -472,7 +474,7 @@ public static partial class MemoryExtensions
     /// <para>
     ///   When using the .Net Standard 2.0 or 2.1 version of this library, this method may allocate
     ///   strings to perform the comparison. This is because the <see cref="CompareInfo"/> class
-    ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
+    ///   does not provide string comparison methods for use with <see cref="ReadOnlyMemory{T}"/>.
     /// </para>
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -501,8 +503,8 @@ public static partial class MemoryExtensions
     /// <param name="span">The <see cref="ReadOnlySpan{T}"/> to split.</param>
     /// <param name="separators">The set of separators to split the span at.</param>
     /// <returns>
-    /// If a separator was found, a tuple containing the parts before and after the separator;
-    /// otherwise, <see langword="null"/>.
+    /// If a separator was found, a <see cref="NullableReadOnlySpanPair{T, T}"/> containing the
+    /// parts before and after the separator; otherwise, an empty <see cref="NullableReadOnlySpanPair{T, T}"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static NullableReadOnlySpanPair<T, T> SplitOnceLastAny<T>(this ReadOnlySpan<T> span, ReadOnlySpan<T> separators)
@@ -518,15 +520,15 @@ public static partial class MemoryExtensions
     }
 
     /// <summary>
-    /// Splits a <see cref="ReadOnlySpan{T}"/> into two parts at the last occurrence of any of the
+    /// Splits a <see cref="ReadOnlyMemory{T}"/> into two parts at the last occurrence of any of the
     /// specified separators.
     /// </summary>
-    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlySpan{T}"/>.</typeparam>
-    /// <param name="memory">The <see cref="ReadOnlySpan{T}"/> to split.</param>
-    /// <param name="separators">The set of separators to split the span at.</param>
+    /// <typeparam name="T">The type of the items in the <see cref="ReadOnlyMemory{T}"/>.</typeparam>
+    /// <param name="memory">The <see cref="ReadOnlyMemory{T}"/> to split.</param>
+    /// <param name="separators">The set of separators to split the memory at.</param>
     /// <returns>
-    /// If a separator was found, a <see cref="NullableReadOnlySpanPair{T, T}"/> containing the
-    /// parts before and after the separator; otherwise, an empty <see cref="NullableReadOnlySpanPair{T, T}"/>.
+    /// If a separator was found, a tuple containing the parts before and after the separator;
+    /// otherwise, <see langword="null"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (ReadOnlyMemory<T>, ReadOnlyMemory<T>)? SplitOnceLastAny<T>(this ReadOnlyMemory<T> memory, ReadOnlySpan<T> separators)
@@ -608,14 +610,14 @@ public static partial class MemoryExtensions
     }
 
     /// <summary>
-    /// Removes a prefix from a span of characters.
+    /// Removes a prefix from a read-only memory region of characters.
     /// </summary>
-    /// <param name="memory">The span of characters to remove the prefix from.</param>
+    /// <param name="memory">The memory region of characters to remove the prefix from.</param>
     /// <param name="prefix">The prefix to remove.</param>
     /// <param name="comparisonType">The type of string comparison to use to match the prefix.</param>
     /// <returns>
     /// If <paramref name="memory"/> starts with <paramref name="prefix"/>, returns the memory
-    /// without the prefix; otherwise, returns <see langword="null"/>.
+    /// region without the prefix; otherwise, returns <see langword="null"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ReadOnlyMemory<char>? StripPrefix(this ReadOnlyMemory<char> memory, ReadOnlySpan<char> prefix,
@@ -667,9 +669,9 @@ public static partial class MemoryExtensions
     }
 
     /// <summary>
-    /// Removes a prefix from a span of characters.
+    /// Removes a prefix from a read-only memory region of characters.
     /// </summary>
-    /// <param name="memory">The span of characters to remove the prefix from.</param>
+    /// <param name="memory">The memory region of characters to remove the prefix from.</param>
     /// <param name="prefix">The prefix to remove.</param>
     /// <param name="culture">
     /// The <see cref="CultureInfo"/> to use to match the prefix.
@@ -677,13 +679,13 @@ public static partial class MemoryExtensions
     /// <param name="options">The options to use for the string comparison.</param>
     /// <returns>
     /// If <paramref name="memory"/> starts with <paramref name="prefix"/>, returns the memory
-    /// without the prefix; otherwise, returns <see langword="null"/>.
+    /// region without the prefix; otherwise, returns <see langword="null"/>.
     /// </returns>
     /// <remarks>
     /// <para>
     ///   When using the .Net Standard 2.0 or 2.1 version of this library, this method may allocate
     ///   strings to perform the comparison. This is because the <see cref="CompareInfo"/> class
-    ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
+    ///   does not provide string comparison methods for use with <see cref="ReadOnlyMemory{T}"/>.
     /// </para>
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -710,7 +712,7 @@ public static partial class MemoryExtensions
     /// <param name="span">The <see cref="ReadOnlySpan{T}"/> to remove the suffix from.</param>
     /// <param name="suffix">The suffix to move.</param>
     /// <returns>
-    /// If <paramref name="span"/> starts with <paramref name="suffix"/>, returns the span without
+    /// If <paramref name="span"/> ends with <paramref name="suffix"/>, returns the span without
     /// the suffix; otherwise, returns an empty <see cref="NullableReadOnlySpan{T}"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -729,10 +731,10 @@ public static partial class MemoryExtensions
     /// Removes a suffix from a <see cref="ReadOnlyMemory{T}"/>.
     /// </summary>
     /// <typeparam name="T">The type of the items in the <see cref="ReadOnlyMemory{T}"/>.</typeparam>
-    /// <param name="memory">The <see cref="ReadOnlyMemory{T}"/> to remove the prefix from.</param>
-    /// <param name="suffix">The prefix to move.</param>
+    /// <param name="memory">The <see cref="ReadOnlyMemory{T}"/> to remove the suffix from.</param>
+    /// <param name="suffix">The suffix to move.</param>
     /// <returns>
-    /// If <paramref name="memory"/> starts with <paramref name="suffix"/>, returns the memory
+    /// If <paramref name="memory"/> ends with <paramref name="suffix"/>, returns the memory
     /// without the suffix; otherwise, returns <see langword="null"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -754,7 +756,7 @@ public static partial class MemoryExtensions
     /// <param name="suffix">The suffix to remove.</param>
     /// <param name="comparisonType">The type of string comparison to use to match the suffix.</param>
     /// <returns>
-    /// If <paramref name="span"/> starts with <paramref name="suffix"/>, returns the span without
+    /// If <paramref name="span"/> ends with <paramref name="suffix"/>, returns the span without
     /// the suffix; otherwise, returns an empty <see cref="NullableReadOnlySpan{T}"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -770,13 +772,13 @@ public static partial class MemoryExtensions
     }
 
     /// <summary>
-    /// Removes a suffix from a span of characters.
+    /// Removes a suffix from a read-only memory region of characters.
     /// </summary>
-    /// <param name="memory">The span of characters to remove the suffix from.</param>
+    /// <param name="memory">The memory region of characters to remove the suffix from.</param>
     /// <param name="suffix">The suffix to remove.</param>
     /// <param name="comparisonType">The type of string comparison to use to match the suffix.</param>
     /// <returns>
-    /// If <paramref name="memory"/> starts with <paramref name="suffix"/>, returns the memory
+    /// If <paramref name="memory"/> ends with <paramref name="suffix"/>, returns the memory
     /// without the suffix; otherwise, returns <see langword="null"/>.
     /// </returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -801,7 +803,7 @@ public static partial class MemoryExtensions
     /// </param>
     /// <param name="options">The options to use for the string comparison.</param>
     /// <returns>
-    /// If <paramref name="span"/> starts with <paramref name="suffix"/>, returns the span without
+    /// If <paramref name="span"/> ends with <paramref name="suffix"/>, returns the span without
     /// the suffix; otherwise, returns an empty <see cref="NullableReadOnlySpan{T}"/>.
     /// </returns>
     /// <remarks>
@@ -829,23 +831,23 @@ public static partial class MemoryExtensions
     }
 
     /// <summary>
-    /// Removes a suffix from a span of characters.
+    /// Removes a suffix from a read-only memory region of characters.
     /// </summary>
-    /// <param name="memory">The span of characters to remove the suffix from.</param>
+    /// <param name="memory">The memory region of characters to remove the suffix from.</param>
     /// <param name="suffix">The suffix to remove.</param>
     /// <param name="culture">
     /// The <see cref="CultureInfo"/> to use to match the suffix.
     /// </param>
     /// <param name="options">The options to use for the string comparison.</param>
     /// <returns>
-    /// If <paramref name="memory"/> starts with <paramref name="suffix"/>, returns the memory
+    /// If <paramref name="memory"/> ends with <paramref name="suffix"/>, returns the memory
     /// without the suffix; otherwise, returns <see langword="null"/>.
     /// </returns>
     /// <remarks>
     /// <para>
     ///   When using the .Net Standard 2.0 or 2.1 version of this library, this method may allocate
     ///   strings to perform the comparison. This is because the <see cref="CompareInfo"/> class
-    ///   does not provide string comparison methods for use with <see cref="ReadOnlySpan{T}"/>.
+    ///   does not provide string comparison methods for use with <see cref="ReadOnlyMemory{T}"/>.
     /// </para>
     /// </remarks>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

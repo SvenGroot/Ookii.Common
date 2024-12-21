@@ -28,7 +28,7 @@ public static partial class MemoryExtensions
         }
 
         /// <summary>
-        /// Gets the current span segment in the enumeration.
+        /// Gets the current memory region segment in the enumeration.
         /// </summary>
         /// <value>
         /// The current segment, or an undefined value if <see cref="MoveNext"/> was not yet
@@ -41,11 +41,11 @@ public static partial class MemoryExtensions
         }
 
         /// <summary>
-        /// Advances the enumerator to the next segment in the span.
+        /// Advances the enumerator to the next segment in the memory region.
         /// </summary>
         /// <returns>
         /// <see langword="true"/> if the enumerator was successfully advanced to the next segment;
-        /// <see langword="false"/> if the enumerator has passed the end of the span.
+        /// <see langword="false"/> if the enumerator has passed the end of the memory region.
         /// </returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool MoveNext()
@@ -99,7 +99,7 @@ public static partial class MemoryExtensions
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through the split segments of the span.
+        /// Returns an enumerator that iterates through the split segments of the memory region.
         /// </summary>
         /// <returns>An enumerator that can be used to iterate through the segments.</returns>
         public readonly SplitMemoryEnumerator GetEnumerator() => new(_value, _separator, _options);
