@@ -40,7 +40,8 @@ public static class NullableReadOnlySpanPair
 public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
 {
     /// <summary>
-    /// A function that maps a <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> to another <see cref="ReadOnlySpanPair{TFirst, TSecond}"/>.
+    /// Encapsulates a method that maps a <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> to
+    /// another <see cref="ReadOnlySpanPair{TFirst, TSecond}"/>.
     /// </summary>
     /// <typeparam name="TResultFirst">
     /// The type of the items in the first value of the resulting
@@ -55,7 +56,8 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
     public delegate ReadOnlySpanPair<TResultFirst, TResultSecond> MapReadOnlyFunc<TResultFirst, TResultSecond>(ReadOnlySpanPair<TFirst, TSecond> value);
 
     /// <summary>
-    /// A function that maps a <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> to a <typeparamref name="TResult"/>.
+    /// Encapsulates a method that maps a <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> to a
+    /// structure with the type <typeparamref name="TResult"/>.
     /// </summary>
     /// <typeparam name="TResult">The type of the resulting value.</typeparam>
     /// <param name="value">The value to map.</param>
@@ -64,7 +66,8 @@ public readonly ref struct NullableReadOnlySpanPair<TFirst, TSecond>
         where TResult : struct;
 
     /// <summary>
-    /// A function that maps a <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> to a <typeparamref name="TResult"/>.
+    /// Encapsulates a method that maps a <see cref="ReadOnlySpanPair{TFirst, TSecond}"/> to a
+    /// class with the type <typeparamref name="TResult"/>.
     /// </summary>
     /// <typeparam name="TResult">The type of the resulting value.</typeparam>
     /// <param name="value">The value to map.</param>

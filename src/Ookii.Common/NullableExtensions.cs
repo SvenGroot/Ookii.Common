@@ -18,8 +18,9 @@ public static class NullableExtensions
     /// </summary>
     /// <typeparam name="T">The type of the value type.</typeparam>
     /// <typeparam name="TResult">The type of the resulting reference type.</typeparam>
+    /// <param name="value">The value to map.</param>
     /// <returns>
-    /// The return value of the method that this delegate encapsulates.
+    /// The mapped value.
     /// </returns>
     /// <remarks>
     /// <para>
@@ -37,8 +38,9 @@ public static class NullableExtensions
     /// </summary>
     /// <typeparam name="T">The type of the reference type.</typeparam>
     /// <typeparam name="TResult">The type of the resulting value type.</typeparam>
+    /// <param name="value">The value to map.</param>
     /// <returns>
-    /// The return value of the method that this delegate encapsulates.
+    /// The mapped value.
     /// </returns>
     /// <remarks>
     /// <para>

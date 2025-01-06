@@ -18,7 +18,7 @@ namespace Ookii.Common;
 public readonly ref struct NullableReadOnlySpan<T>
 {
     /// <summary>
-    /// A function that maps a <see cref="ReadOnlySpan{T}"/> to another <see cref="ReadOnlySpan{T}"/>.
+    /// Encapsulates a method that maps a <see cref="ReadOnlySpan{T}"/> to another <see cref="ReadOnlySpan{T}"/>.
     /// </summary>
     /// <typeparam name="TResult">The type of the items in the resulting <see cref="ReadOnlySpan{T}"/>.</typeparam>
     /// <param name="value">The value to map.</param>
@@ -26,7 +26,8 @@ public readonly ref struct NullableReadOnlySpan<T>
     public delegate ReadOnlySpan<TResult> MapReadOnlyFunc<TResult>(ReadOnlySpan<T> value);
 
     /// <summary>
-    /// A function that maps a <see cref="ReadOnlySpan{T}"/> to another <see cref="Span{T}"/>.
+    /// Encapsulates a method that maps a <see cref="ReadOnlySpan{T}"/> to a
+    /// <see cref="Span{T}"/>.
     /// </summary>
     /// <typeparam name="TResult">The type of the items in the resulting <see cref="Span{T}"/>.</typeparam>
     /// <param name="value">The value to map.</param>
@@ -34,7 +35,8 @@ public readonly ref struct NullableReadOnlySpan<T>
     public delegate Span<TResult> MapSpanFunc<TResult>(ReadOnlySpan<T> value);
 
     /// <summary>
-    /// A function that maps a <see cref="ReadOnlySpan{T}"/> to a <typeparamref name="TResult"/>.
+    /// Encapsulates a method that maps a <see cref="ReadOnlySpan{T}"/> to a structure with the
+    /// type <typeparamref name="TResult"/>.
     /// </summary>
     /// <typeparam name="TResult">The type of the resulting value.</typeparam>
     /// <param name="value">The value to map.</param>
@@ -43,7 +45,8 @@ public readonly ref struct NullableReadOnlySpan<T>
         where TResult : struct;
 
     /// <summary>
-    /// A function that maps a <see cref="ReadOnlySpan{T}"/> to a <typeparamref name="TResult"/>.
+    /// Encapsulates a method that maps a <see cref="ReadOnlySpan{T}"/> to a class with the type
+    /// <typeparamref name="TResult"/>.
     /// </summary>
     /// <typeparam name="TResult">The type of the resulting value.</typeparam>
     /// <param name="value">The value to map.</param>
