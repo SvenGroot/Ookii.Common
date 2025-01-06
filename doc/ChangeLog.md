@@ -1,5 +1,5 @@
 # What’s new in Ookii.Common
 
-## Ookii.Common 0.1 (TBD)
+## Ookii.Common 1.0 (2025-01-05)
 
 - First release.

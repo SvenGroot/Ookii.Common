@@ -21,7 +21,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReadmeFile>PackageReadme.md</PackageReadmeFile>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <!-- Turn off unknown reference warning for older frameworks, since we reference some newer types -->
+    <!-- Turn off unknown doc reference warning for older frameworks, since we reference some newer types -->
     <NoWarn Condition="'$(TargetFramework)'!='net8.0'">CS1574</NoWarn>
   </PropertyGroup>
 
